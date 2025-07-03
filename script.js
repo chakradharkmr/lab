@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // The script will infer a title or use a generic one.
     // For more control, you can provide objects with custom titles.
     const urls = [
-        'welcome.html',
+        'summer.html',
         'https://example.com/products', // External URL example
         'contact.html',
         'blog-post.html',
