@@ -6,10 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // For more control, you can provide objects with custom titles.
     const urls = [
         'summer.html',
-        'https://example.com/products', // External URL example
+        'https://kaveri.net.in/info2.html', // External URL example
         'info.html',
         'blog-post.html',
-        'https://github.com/your-username/your-repo', // Another external URL
+        'https://kaveri.net.in/summer2.html', // Another external URL
         'dashboard.html',
         'about-us.html',
         { url: 'https://myspecialproject.com/demo', title: 'My Awesome Project Demo' }, // Custom title
