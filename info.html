@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Almere Activities Guide for 9-Year-Olds</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .flow-arrow {
+            font-size: 2rem;
+            line-height: 1;
+            color: #FFD166;
+        }
+        .kpi-box {
+            background-color: #073B4C;
+            color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+        .kpi-number {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1;
+            color: #FFD166;
+        }
+        .kpi-text {
+            font-size: 1.125rem;
+            margin-top: 0.5rem;
+        }
+        .flow-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+            border: 2px solid #118AB2;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .outcome-card {
+            background-color: #06D6A0;
+            color: #073B4C;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+        <header class="text-center my-8 md:my-12">
+            <h1 class="text-4xl md:text-6xl font-black text-[#073B4C]">Find Your Spark in Almere</h1>
+            <p class="text-xl md:text-2xl text-[#118AB2] mt-4 max-w-3xl mx-auto">A Visual Guide to Enriching Activities for 9-Year-Olds in Almere Stad & Muziekwijk</p>
+        </header>
+
+        <section id="introduction" class="my-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-3xl font-bold text-[#073B4C] mb-4">A World of Opportunity</h2>
+                    <p class="text-gray-700 leading-relaxed">
+                        Almere offers a surprisingly rich and diverse landscape of extracurricular activities perfect for children around the age of nine. From gaining life-saving swimming skills to exploring artistic talents or developing strategic thinking with chess, there's a program to match every interest and goal. This guide visualizes the key findings from our comprehensive research to help you make the best choice for your child, focusing on programs that offer not just fun, but also clear pathways for growth and achievement.
+                    </p>
+                </div>
+                <div class="kpi-box">
+                    <div class="kpi-number">15+</div>
+                    <p class="kpi-text">Structured programs identified within 5km of Muziekwijk, offering ongoing classes and skill development.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="categories" class="my-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-[#073B4C] mb-8">What's Your Child's Passion?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="chart-container">
+                    <canvas id="activityDonutChart"></canvas>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h3 class="text-2xl font-bold text-[#118AB2] mb-4">Activity Breakdown</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        The opportunities in Almere are broadly split across three main areas. **Sports & Movement** programs are the most numerous, ranging from team-based activities to individual disciplines. **Arts & Music** provide a strong creative outlet, with options in dance, visual arts, and various instruments. Finally, **Community & Skill-Building** initiatives like chess and nature workshops offer unique avenues for cognitive and social development.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="costs" class="my-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-[#073B4C] mb-8">A Look at the Costs</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+                <div class="bg-white rounded-lg shadow-lg p-8 lg:col-span-2">
+                    <h3 class="text-2xl font-bold text-[#118AB2] mb-4">Financial Overview</h3>
+                    <p class="text-gray-700 leading-relaxed mb-4">
+                        Costs vary significantly, from completely free after-school sports to more specialized private lessons. The chart opposite shows typical monthly or program-based costs, giving a clear comparison.
+                    </p>
+                    <div class="bg-[#FFD166] p-4 rounded-lg text-center">
+                        <p class="font-bold text-[#073B4C]">Financial Support Available!</p>
+                        <p class="text-sm text-[#073B4C]">Many providers partner with <span class="font-bold">Jeugdfonds Sport & Cultuur Almere</span>, which can help cover fees for families with limited income. Always ask your chosen provider about this possibility.</p>
+                    </div>
+                </div>
+                <div class="lg:col-span-3 bg-white p-6 rounded-lg shadow-lg">
+                    <div class="chart-container h-96 max-h-[500px]">
+                        <canvas id="costBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="diplomas" class="my-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-[#073B4C] mb-8">The Path to Achievement</h2>
+             <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-10">Many programs in Almere offer more than just weekly classes; they provide structured pathways to recognized achievements, a key factor for long-term development.</p>
+            <div class="space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-5 items-center gap-4">
+                    <div class="flow-card md:col-span-2"><strong>Activity:</strong> Swimming (Optisport / Van Rheenen)</div>
+                    <div class="flow-arrow text-center">→</div>
+                    <div class="flow-card outcome-card md:col-span-2"><strong>Outcome:</strong> Formal A, B, C Diplomas</div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-5 items-center gap-4">
+                    <div class="flow-card md:col-span-2"><strong>Activity:</strong> Chess (Schaakvereniging Almere)</div>
+                    <div class="flow-arrow text-center">→</div>
+                    <div class="flow-card outcome-card md:col-span-2"><strong>Outcome:</strong> Stappenmethode Exams & Certification</div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-5 items-center gap-4">
+                    <div class="flow-card md:col-span-2"><strong>Activity:</strong> Martial Arts (Warrior Skillz)</div>
+                    <div class="flow-arrow text-center">→</div>
+                    <div class="flow-card outcome-card md:col-span-2"><strong>Outcome:</strong> Certificate of Participation</div>
+                </div>
+                 <div class="grid grid-cols-1 md:grid-cols-5 items-center gap-4">
+                    <div class="flow-card md:col-span-2"><strong>Activity:</strong> Music, Dance & Arts</div>
+                    <div class="flow-arrow text-center">→</div>
+                    <div class="flow-card outcome-card md:col-span-2"><strong>Outcome:</strong> Continuous Skill Progression</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="providers" class="my-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-[#073B4C] mb-8">Who Offers These Activities?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                 <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h3 class="text-2xl font-bold text-[#118AB2] mb-4">Provider Landscape</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        The activities are run by a healthy mix of organizations. **Commercial businesses** like swim schools and dance studios make up a large portion. They are complemented by **community-based groups** such as scouting and music associations, and dedicated **non-profit foundations** that often focus on specific skill sets like empowerment or arts education. This variety ensures a wide range of teaching styles and program philosophies.
+                    </p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="providerPieChart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="text-center my-12 border-t-2 border-[#118AB2] pt-8">
+             <h2 class="text-3xl font-bold text-[#073B4C] mb-4">Ready to Get Started?</h2>
+             <p class="text-lg text-gray-700 max-w-3xl mx-auto">The best way to find the perfect fit is to reach out. Most places offer trial lessons. Use the contact details in the full report to inquire about schedules, availability, and financial support.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const energeticPlayfulPalette = {
+                red: '#FF6B6B',
+                yellow: '#FFD166',
+                green: '#06D6A0',
+                blue: '#118AB2',
+                darkBlue: '#073B4C'
+            };
+
+            const wrapLabel = (str, maxWidth) => {
+                if (str.length <= maxWidth) {
+                    return str;
+                }
+                const words = str.split(' ');
+                const lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxWidth) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                if (currentLine) {
+                    lines.push(currentLine.trim());
+                }
+                return lines;
+            };
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                } else {
+                    return label;
+                }
+            };
+            
+            const sharedChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: energeticPlayfulPalette.darkBlue,
+                            font: {
+                                family: "'Inter', sans-serif"
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                }
+            };
+
+            const activityDonutCtx = document.getElementById('activityDonutChart').getContext('2d');
+            new Chart(activityDonutCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Sports & Movement', 'Arts & Music', wrapLabel('Community & Skill-Building', 16)],
+                    datasets: [{
+                        label: 'Activity Categories',
+                        data: [5, 6, 3],
+                        backgroundColor: [
+                            energeticPlayfulPalette.blue,
+                            energeticPlayfulPalette.red,
+                            energeticPlayfulPalette.yellow
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    ...sharedChartOptions,
+                    cutout: '60%'
+                }
+            });
+
+            const costBarCtx = document.getElementById('costBarChart').getContext('2d');
+            new Chart(costBarCtx, {
+                type: 'bar',
+                data: {
+                    labels: [
+                        'AKT (After-School)', 
+                        'Dance (per lesson/wk)',
+                        'Swimming (Monthly)', 
+                        wrapLabel('Warrior Skillz (Program)', 16),
+                        wrapLabel('Piano (Yearly)', 16)
+                    ],
+                    datasets: [{
+                        label: 'Estimated Cost in €',
+                        data: [0, 27, 64, 397, 1000],
+                        backgroundColor: [
+                            energeticPlayfulPalette.green,
+                            energeticPlayfulPalette.blue,
+                            energeticPlayfulPalette.red,
+                            energeticPlayfulPalette.yellow,
+                            energeticPlayfulPalette.darkBlue
+                        ],
+                        borderColor: [
+                             energeticPlayfulPalette.green,
+                            energeticPlayfulPalette.blue,
+                            energeticPlayfulPalette.red,
+                            energeticPlayfulPalette.yellow,
+                            energeticPlayfulPalette.darkBlue
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    ...sharedChartOptions,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Cost (€)',
+                                color: energeticPlayfulPalette.darkBlue
+                            },
+                             ticks: {
+                                color: energeticPlayfulPalette.darkBlue
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: energeticPlayfulPalette.darkBlue
+                            }
+                        }
+                    },
+                    plugins: {
+                        ...sharedChartOptions.plugins,
+                        legend: { display: false }
+                    }
+                }
+            });
+
+            const providerPieCtx = document.getElementById('providerPieChart').getContext('2d');
+            new Chart(providerPieCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Commercial', 'Community-Based', 'Non-Profit/Foundation'],
+                    datasets: [{
+                        label: 'Provider Types',
+                        data: [5, 4, 2], // Approx count from report
+                        backgroundColor: [
+                            energeticPlayfulPalette.red,
+                            energeticPlayfulPalette.yellow,
+                            energeticPlayfulPalette.green
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 4
+                    }]
+                },
+                options: sharedChartOptions
+            });
+        });
+    </script>
+</body>
+</html>

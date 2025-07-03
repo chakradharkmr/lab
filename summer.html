@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summer Fun in Almere 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony (Sand, Slate, Muted Teal, Soft Coral) -->
+    <!-- Application Structure Plan: A filter-driven dashboard structure was chosen over a linear report format to empower users (parents) to instantly find relevant information. The primary user task is finding specific activities based on constraints like location, date, and interest. This non-linear, interactive approach with filters for location, week, and activity type, combined with a dynamic card-based display, directly supports this task. It transforms passive reading into active exploration, making the data significantly more accessible and useful for planning. Interactive charts provide instant visual feedback on the filtered data subset, enhancing understanding of the available options. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Comprehensive list of all summer activities. -> Goal: Allow users to find specific, relevant activities. -> Presentation Method: Interactive HTML/CSS cards displayed in a responsive grid. -> Interaction: The grid of cards is dynamically filtered in real-time based on user selections for location, week, and type. -> Justification: A card layout is highly scannable and presents all key details for an event in a structured, digestible format. Filtering is the most efficient way for users to narrow down the large dataset. -> Library/Method: Vanilla JS DOM manipulation.
+        - Report Info: Geographic distribution and categorical variety of activities. -> Goal: Provide a high-level overview of available options. -> Viz/Presentation Method: A donut chart for location distribution and a bar chart for activity type counts. -> Interaction: Both charts dynamically update to reflect the currently filtered set of activities. -> Justification: Visualizations offer a quick, at-a-glance understanding of the options. The donut chart is ideal for showing part-to-whole relationships (locations), while the bar chart is best for comparing discrete category counts (types). -> Library/Method: Chart.js with Canvas rendering.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .active-filter { background-color: #38bdf8; color: white; }
+        .chart-container { position: relative; width: 100%; max-width: 450px; margin-left: auto; margin-right: auto; height: 320px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .activity-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .activity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center">
+            <h1 class="text-3xl sm:text-4xl font-bold text-sky-600">Summer Fun in Almere</h1>
+            <p class="mt-2 text-lg text-gray-600">An interactive guide to children's activities (ages 9+, Groep 6 level) | July 14 - August 24, 2025</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <section id="filters" class="mb-8 p-6 bg-white rounded-xl shadow-md">
+            <div class="mb-6 text-center">
+                <h2 class="text-2xl font-bold text-gray-700 mb-2">Find the Perfect Activity</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Use the filters to quickly and easily discover the best summer activities for your child. Select a location, week, or activity type to instantly update the list.</p>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <h3 class="font-semibold text-lg mb-3 text-gray-700 flex items-center justify-center gap-2"><span class="text-xl">📍</span>Location</h3>
+                    <div id="location-filters" class="flex flex-wrap justify-center gap-2">
+                        <button data-filter-group="location" data-filter="all" class="filter-btn px-4 py-2 text-sm font-medium rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition active-filter">All Locations</button>
+                        <button data-filter-group="location" data-filter="Stad" class="filter-btn px-4 py-2 text-sm font-medium rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">Almere Stad</button>
+                        <button data-filter-group="location" data-filter="Muziekwijk" class="filter-btn px-4 py-2 text-sm font-medium rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">Muziekwijk &amp; Surroundings</button>
+                        <button data-filter-group="location" data-filter="Haven" class="filter-btn px-4 py-2 text-sm font-medium rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">Almere Haven</button>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold text-lg mb-3 text-gray-700 flex items-center justify-center gap-2"><span class="text-xl">🗓️</span> Week (2025)</h3>
+                    <div id="week-filters" class="flex flex-wrap justify-center gap-2">
+                        <button data-filter-group="week" data-filter="all" class="filter-btn px-3 py-2 text-sm font-medium rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition active-filter">All Weeks</button>
+                        <button data-filter-group="week" data-filter="1" class="filter-btn px-3 py-2 text-sm font-medium rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">Week 1 (Jul 14-20)</button>
+                        <button data-filter-group="week" data-filter="2" class="filter-btn px-3 py-2 text-sm font-medium rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">Week 2 (Jul 21-27)</button>
+                        <button data-filter-group="week" data-filter="3" class="filter-btn px-3 py-2 text-sm font-medium rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">Week 3 (Jul 28-Aug 3)</button>
+                        <button data-filter-group="week" data-filter="4" class="filter-btn px-3 py-2 text-sm font-medium rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">Week 4 (Aug 4-10)</button>
+                        <button data-filter-group="week" data-filter="5" class="filter-btn px-3 py-2 text-sm font-medium rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">Week 5 (Aug 11-17)</button>
+                        <button data-filter-group="week" data-filter="6" class="filter-btn px-3 py-2 text-sm font-medium rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">Week 6 (Aug 18-24)</button>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold text-lg mb-3 text-gray-700 flex items-center justify-center gap-2"><span class="text-xl">🎨</span> Activity Type</h3>
+                    <div id="type-filters" class="flex flex-wrap justify-center gap-2">
+                        <button data-filter-group="type" data-filter="all" class="filter-btn px-4 py-2 text-sm font-medium rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition active-filter">All Types</button>
+                        <button data-filter-group="type" data-filter="Sport & Play" class="filter-btn px-4 py-2 text-sm font-medium rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">Sport & Play</button>
+                        <button data-filter-group="type" data-filter="Creative" class="filter-btn px-4 py-2 text-sm font-medium rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">Creative</button>
+                        <button data-filter-group="type" data-filter="Cooking & Baking" class="filter-btn px-4 py-2 text-sm font-medium rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">Cooking & Baking</button>
+                        <button data-filter-group="type" data-filter="Outdoor & Adventure" class="filter-btn px-4 py-2 text-sm font-medium rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">Outdoor & Adventure</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="results" class="mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-700">Found Activities</h2>
+                <span id="activity-count" class="px-3 py-1 text-sm font-semibold text-sky-800 bg-sky-100 rounded-full"></span>
+            </div>
+            <div id="activity-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+        
+        <section id="visualizations" class="mb-8 p-6 bg-white rounded-xl shadow-md">
+            <div class="mb-6 text-center">
+                <h2 class="text-2xl font-bold text-gray-700 mb-2">Activities at a Glance</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">These charts provide a visual overview of the selected activities, categorized by location and type. They automatically update as you change the filters.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div class="w-full">
+                    <h3 class="text-lg font-semibold text-center mb-2 text-gray-700">Distribution by Location</h3>
+                    <div class="chart-container">
+                        <canvas id="locationChart"></canvas>
+                    </div>
+                </div>
+                <div class="w-full">
+                     <h3 class="text-lg font-semibold text-center mb-2 text-gray-700">Count by Activity Type</h3>
+                    <div class="chart-container">
+                        <canvas id="typeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="info" class="p-6 bg-white rounded-xl shadow-md">
+            <h2 class="text-2xl font-bold text-gray-700 mb-4 text-center">General Information</h2>
+             <div class="grid md:grid-cols-2 gap-6 text-center md:text-left">
+                <div>
+                    <h3 class="font-semibold text-lg text-sky-600 mb-2">Jeugdland Opening Hours (Summer Vacation)</h3>
+                    <ul class="space-y-1 text-gray-600 list-inside">
+                        <li><strong>Jeugdland Stad:</strong> Wed-Fri 10:30 AM-5:00 PM, Sat 10:00 AM-4:00 PM</li>
+                        <li><strong>Jeugdland Haven:</strong> Wed-Sat 10:30 AM-5:00 PM</li>
+                        <li><strong>Jeugdland Buiten:</strong> Wed-Sat 10:30 AM-5:00 PM</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-lg text-sky-600 mb-2">Useful Links</h3>
+                    <ul class="space-y-1">
+                        <li><a href="https://www.deschoor.nl" target="_blank" class="text-sky-500 hover:underline">Official De Schoor website</a></li>
+                        <li><a href="https://www.jeugdlandalmere.nl" target="_blank" class="text-sky-500 hover:underline">Official Jeugdland website</a></li>
+                    </ul>
+                    <p class="text-sm text-gray-500 mt-2">Always check the official websites for the most current information, costs, and any mandatory registrations.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-100 mt-8 py-4">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500 text-sm">
+            <p>This interactive guide is compiled based on public information from De Schoor and partners. Data accurate as of early July 2025. Verification of details is recommended.</p>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const activities = [
+            { name: "Night at Jeugdland", date: "2025-07-20", time: "Overnight", location: "Jeugdland Stad", region: "Stad", type: "Outdoor & Adventure", age: "8+", cost: "Unknown", registration: "Mandatory" },
+            { name: "Jump to Get Fit", date: "2025-07-16", time: "1:00 PM-2:30 PM", location: "Jeugdland Haven", region: "Haven", type: "Sport & Play", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Baking Activity", date: "2025-07-17", time: "1:00 PM-2:30 PM", location: "Jeugdland Haven", region: "Haven", type: "Cooking & Baking", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Decorate Phone Pouch", date: "2025-07-18", time: "1:00 PM-2:30 PM", location: "Jeugdland Haven", region: "Haven", type: "Creative", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Creative with Foam Clay", date: "2025-07-19", time: "1:00 PM-2:30 PM", location: "Jeugdland Haven", region: "Haven", type: "Creative", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Glass Painting", date: "2025-07-23", time: "1:00 PM-2:30 PM", location: "Jeugdland Haven", region: "Haven", type: "Creative", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Pancake Baking", date: "2025-07-24", time: "1:00 PM-2:30 PM", location: "Jeugdland Stad", region: "Stad", type: "Cooking & Baking", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Dream Play Bus Canoeing", date: "2025-07-24", time: "Afternoon", location: "Jeugdland Haven", region: "Haven", type: "Outdoor & Adventure", age: "7+ (swimming diploma)", cost: "Unknown", registration: "Likely" },
+            { name: "Bottle Football", date: "2025-07-25", time: "1:00 PM-2:30 PM", location: "Jeugdland Stad", region: "Stad", type: "Sport & Play", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Jump to Get Fit", date: "2025-07-25", time: "1:00 PM-2:30 PM", location: "Jeugdland Haven", region: "Haven", type: "Sport & Play", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Sport, Play & Crafts", date: "2025-07-25", time: "2:00 PM-4:00 PM", location: "Muzenpark", region: "Muziekwijk", type: "Sport & Play", age: "4-12", cost: "Free", registration: "No" },
+            { name: "Bread Roll Baking", date: "2025-07-26", time: "1:00 PM-2:30 PM", location: "Jeugdland Stad", region: "Stad", type: "Cooking & Baking", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Making Happy Socks", date: "2025-07-26", time: "1:00 PM-2:30 PM", location: "Jeugdland Haven", region: "Haven", type: "Creative", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Sumo Wrestling", date: "2025-07-27", time: "1:00 PM-2:30 PM", location: "Jeugdland Stad", region: "Stad", type: "Sport & Play", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Chocolate Fondue", date: "2025-07-31", time: "1:00 PM-2:30 PM", location: "Jeugdland Stad", region: "Stad", type: "Cooking & Baking", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Decorating Masks", date: "2025-07-31", time: "1:00 PM-2:30 PM", location: "Jeugdland Haven", region: "Haven", type: "Creative", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Salt Dough Crafting", date: "2025-08-01", time: "1:00 PM-2:30 PM", location: "Jeugdland Stad", region: "Stad", type: "Creative", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Water Games", date: "2025-08-01", time: "1:00 PM-2:30 PM", location: "Jeugdland Haven", region: "Haven", type: "Sport & Play", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Mini Pizza Baking", date: "2025-08-02", time: "1:00 PM-2:30 PM", location: "Jeugdland Stad", region: "Stad", type: "Cooking & Baking", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Sport & Play", date: "2025-08-02", time: "1:00 PM-2:30 PM", location: "Jeugdland Haven", region: "Haven", type: "Sport & Play", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Shaving Foam Painting", date: "2025-08-03", time: "1:00 PM-2:30 PM", location: "Jeugdland Stad", region: "Stad", type: "Creative", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Canoeing", date: "2025-08-07", time: "1:00 PM-2:30 PM", location: "Jeugdland Stad", region: "Stad", type: "Outdoor & Adventure", age: "8+ (swimming diploma)", cost: "Entry fee", registration: "Mandatory" },
+            { name: "Spring Shoe Activity", date: "2025-08-08", time: "3:00 PM", location: "Jeugdland Stad", region: "Stad", type: "Sport & Play", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Marshmallow Roasting", date: "2025-08-09", time: "1:00 PM-2:30 PM", location: "Jeugdland Stad", region: "Stad", type: "Cooking & Baking", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Dotwork Paintings", date: "2025-08-10", time: "1:00 PM-2:30 PM", location: "Jeugdland Stad", region: "Stad", type: "Creative", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Making a Photo Board", date: "2025-08-14", time: "1:00 PM-2:30 PM", location: "Jeugdland Stad", region: "Stad", type: "Creative", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "SUP, Crafts & More", date: "2025-08-14", time: "2:00 PM-4:00 PM", location: "Beatrixpark", region: "Muziekwijk", type: "Outdoor & Adventure", age: "4-12 (swimming diploma)", cost: "Free", registration: "Upon arrival" },
+            { name: "Sport & Play", date: "2025-08-15", time: "1:00 PM-2:30 PM", location: "Jeugdland Stad", region: "Stad", type: "Sport & Play", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Mountain Biking", date: "2025-08-16", time: "1:00 PM-2:30 PM", location: "Jeugdland Stad", region: "Stad", type: "Outdoor & Adventure", age: "7+ (1.35m height)", cost: "Entry fee", registration: "No" },
+            { name: "Water Slide", date: "2025-08-17", time: "1:00 PM-2:30 PM", location: "Jeugdland Stad", region: "Stad", type: "Sport & Play", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Spring Shoe Activity", date: "2025-08-21", time: "2:00 PM-3:00 PM", location: "Jeugdland Stad", region: "Stad", type: "Sport & Play", age: "All ages", cost: "Entry fee", registration: "No" },
+            { name: "Sport & Play with TIO", date: "2025-08-21", time: "2:30 PM-3:30 PM", location: "Speelveldje Churchillweg", region: "Muziekwijk", type: "Sport & Play", age: "10-16", cost: "Free", registration: "Via TIO website" },
+            { name: "Canoeing", date: "2025-08-22", time: "1:00 PM-2:30 PM", location: "Jeugdland Stad", region: "Stad", type: "Outdoor & Adventure", age: "7+ (swimming diploma)", cost: "Entry fee", registration: "Mandatory" },
+            { name: "SUP", date: "2025-08-22", time: "1:00 PM-2:00 PM", location: "C. Seedorf Playground", region: "Muziekwijk", type: "Outdoor & Adventure", age: "6-12 (swimming diploma)", cost: "Free", registration: "Mandatory (Krish)" },
+            { name: "Mountain Biking", date: "2025-08-23", time: "1:00 PM-2:30 PM", location: "Jeugdland Stad", region: "Stad", type: "Outdoor & Adventure", age: "7+ (1.35m height)", cost: "Entry fee", registration: "No" },
+            { name: "Baking Afternoon", date: "2025-08-24", time: "1:00 PM-2:30 PM", location: "Jeugdland Stad", region: "Stad", type: "Cooking & Baking", age: "All ages", cost: "Entry fee", registration: "No" },
+        ];
+
+        const filters = {
+            location: 'all',
+            week: 'all',
+            type: 'all'
+        };
+
+        const vacationStartDate = new Date('2025-07-14');
+        const getWeekNumber = (dateString) => {
+            const date = new Date(dateString);
+            const diffTime = Math.abs(date - vacationStartDate);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            return Math.floor(diffDays / 7) + 1;
+        };
+        
+        const activityGrid = document.getElementById('activity-grid');
+        const activityCount = document.getElementById('activity-count');
+        
+        const typeIcons = {
+            "Sport & Play": "⚽",
+            "Creative": "🎨",
+            "Cooking & Baking": "🍳",
+            "Outdoor & Adventure": "🏕️"
+        };
+        
+        const typeColors = {
+            "Sport & Play": "bg-green-100 text-green-800",
+            "Creative": "bg-purple-100 text-purple-800",
+            "Cooking & Baking": "bg-orange-100 text-orange-800",
+            "Outdoor & Adventure": "bg-blue-100 text-blue-800"
+        };
+
+        const renderActivities = () => {
+            const filteredActivities = activities.filter(activity => {
+                const weekMatch = filters.week === 'all' || getWeekNumber(activity.date) == filters.week;
+                const locationMatch = filters.location === 'all' || activity.region === filters.location;
+                const typeMatch = filters.type === 'all' || activity.type === filters.type;
+                return weekMatch && locationMatch && typeMatch;
+            });
+
+            activityGrid.innerHTML = '';
+            if (filteredActivities.length === 0) {
+                 activityGrid.innerHTML = `<p class="text-gray-500 col-span-full text-center">No activities found matching your selection. Please try a different filter combination.</p>`;
+            } else {
+                filteredActivities.forEach(activity => {
+                    const card = document.createElement('div');
+                    card.className = `activity-card bg-white rounded-lg shadow p-5 flex flex-col`;
+                    
+                    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                    const date = new Date(activity.date + 'T00:00:00');
+                    const formattedDate = `${dayNames[date.getDay()]}, ${date.toLocaleString('en-US', { month: 'short', day: 'numeric' })}`;
+
+                    card.innerHTML = `
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-bold text-gray-800">${activity.name}</h3>
+                                <span class="text-3xl">${typeIcons[activity.type] || '✨'}</span>
+                            </div>
+                            <p class="text-sm text-gray-500 mb-4">${activity.description || ''}</p>
+                            <div class="text-sm space-y-2 text-gray-600">
+                                <p><strong class="font-semibold text-gray-700">📍 Location:</strong> ${activity.location}</p>
+                                <p><strong class="font-semibold text-gray-700">🗓️ Date & Time:</strong> ${formattedDate}, ${activity.time}</p>
+                                <p><strong class="font-semibold text-gray-700">🧑‍🤝‍🧑 Age Suitability:</strong> ${activity.age}</p>
+                                <p><strong class="font-semibold text-gray-700">💰 Cost:</strong> ${activity.cost}</p>
+                                <p><strong class="font-semibold text-gray-700">✍️ Registration:</strong> ${activity.registration}</p>
+                            </div>
+                        </div>
+                         <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+                             <span class="px-3 py-1 text-xs font-semibold rounded-full ${typeColors[activity.type] || 'bg-gray-100 text-gray-800'}">${activity.type}</span>
+                         </div>
+                    `;
+                    activityGrid.appendChild(card);
+                });
+            }
+            activityCount.textContent = `${filteredActivities.length} found`;
+            updateCharts(filteredActivities);
+        };
+
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const { filterGroup, filter } = e.target.dataset;
+                filters[filterGroup] = filter;
+                
+                document.querySelectorAll(`button[data-filter-group="${filterGroup}"]`).forEach(btn => {
+                    btn.classList.remove('active-filter');
+                });
+                e.target.classList.add('active-filter');
+                
+                renderActivities();
+            });
+        });
+        
+        let locationChart, typeChart;
+        const chartColors = {
+            backgroundColor: ['#67e8f9', '#fca5a5', '#86efac', '#c4b5fd'],
+            borderColor: ['#0891b2', '#e11d48', '#16a34a', '#7c3aed'],
+        };
+
+        const updateCharts = (filteredData) => {
+            const locationCounts = filteredData.reduce((acc, activity) => {
+                acc[activity.region] = (acc[activity.region] || 0) + 1;
+                return acc;
+            }, {});
+
+            const typeCounts = filteredData.reduce((acc, activity) => {
+                acc[activity.type] = (acc[activity.type] || 0) + 1;
+                return acc;
+            }, {});
+
+            if(locationChart) locationChart.destroy();
+            locationChart = new Chart(document.getElementById('locationChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(locationCounts),
+                    datasets: [{
+                        data: Object.values(locationCounts),
+                        backgroundColor: chartColors.backgroundColor,
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top' } }
+                }
+            });
+
+            if(typeChart) typeChart.destroy();
+            typeChart = new Chart(document.getElementById('typeChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(typeCounts),
+                    datasets: [{
+                        label: 'Number of Activities',
+                        data: Object.values(typeCounts),
+                        backgroundColor: chartColors.backgroundColor,
+                        borderColor: chartColors.borderColor,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { beginAtZero: true, ticks: { stepSize: 1 } }
+                    }
+                }
+            });
+        }
+
+        renderActivities();
+    });
+    </script>
+</body>
+</html>
