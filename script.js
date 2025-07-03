@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const urls = [
         'summer.html',
         'https://example.com/products', // External URL example
-        'contact.html',
+        'info.html',
         'blog-post.html',
         'https://github.com/your-username/your-repo', // Another external URL
         'dashboard.html',
