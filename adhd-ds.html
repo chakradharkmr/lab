@@ -3,87 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comprehensive Development Plan</title>
+    <title>Super Kid Development Plan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4361ee;
-            --secondary: #3f37c9;
-            --accent: #4895ef;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --success: #4cc9f0;
-            --warning: #f72585;
+            --primary: #6C63FF;
+            --secondary: #FF6584;
+            --accent: #42C0FB;
+            --light: #F8F5FF;
+            --dark: #3A3845;
+            --success: #6DDC8F;
+            --warning: #FF9F1C;
+            --purple: #A78BFA;
+            --pink: #F9A8D4;
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Comic Neue', cursive;
             line-height: 1.6;
             color: var(--dark);
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f7ff;
+            background-color: var(--light);
+            background-image: radial-gradient(circle at 10% 20%, rgba(248, 245, 255, 0.8) 0%, rgba(255, 255, 255, 0.9) 90%);
         }
         
         header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--primary), var(--purple));
             color: white;
             padding: 2rem;
-            border-radius: 10px;
+            border-radius: 20px;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 15px rgba(108, 99, 255, 0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: gradientBG 8s ease infinite;
+            background-size: 400% 400%;
+        }
+        
+        @keyframes gradientBG {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
         }
         
         h1 {
             margin: 0;
-            font-size: 2.5rem;
+            font-size: 2.8rem;
+            font-family: 'Fredoka One', cursive;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {transform: translateY(0);}
+            50% {transform: translateY(-10px);}
         }
         
         h2 {
-            color: var(--secondary);
-            border-bottom: 2px solid var(--accent);
+            color: var(--primary);
+            border-bottom: 3px dashed var(--accent);
             padding-bottom: 0.5rem;
             margin-top: 2rem;
+            font-family: 'Fredoka One', cursive;
         }
         
         h3 {
-            color: var(--primary);
+            color: var(--secondary);
+            font-family: 'Fredoka One', cursive;
         }
         
         .container {
             background: white;
-            border-radius: 10px;
+            border-radius: 20px;
             padding: 2rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             margin-bottom: 2rem;
+            border: 2px solid white;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: var(--accent);
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 1.5rem 0;
-            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            overflow: hidden;
         }
         
         th {
-            background-color: var(--primary);
+            background: linear-gradient(to right, var(--primary), var(--purple));
             color: white;
-            padding: 12px;
+            padding: 15px;
             text-align: left;
+            font-family: 'Fredoka One', cursive;
         }
         
         td {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
             vertical-align: top;
         }
         
         tr:nth-child(even) {
-            background-color: #f8f9fa;
+            background-color: #f9f5ff;
         }
         
         tr:hover {
-            background-color: #e9ecef;
+            background-color: #f0ebff;
+            transform: scale(1.01);
+            transition: all 0.2s;
         }
         
         ul, ol {
@@ -91,33 +129,105 @@
         }
         
         li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        li:before {
+            content: "•";
+            color: var(--accent);
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -3px;
         }
         
         .checklist {
-            background-color: #e8f4fc;
+            background-color: #f0f7ff;
             padding: 1.5rem;
-            border-radius: 8px;
-            border-left: 5px solid var(--accent);
+            border-radius: 15px;
+            border-left: 8px solid var(--accent);
             margin: 1.5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .checklist:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2342C0FB' opacity='0.1'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
         }
         
         .routine {
-            background-color: #f0f7f4;
+            background-color: #f5fff7;
             padding: 1.5rem;
-            border-radius: 8px;
-            border-left: 5px solid #2ec4b6;
+            border-radius: 15px;
+            border-left: 8px solid var(--success);
+            margin: 1.5rem 0;
         }
         
         .time {
             font-weight: bold;
             color: var(--secondary);
+            background-color: #fff0f5;
+            padding: 0.2rem 0.5rem;
+            border-radius: 50px;
+            display: inline-block;
         }
         
         .highlight {
             background-color: #fff3cd;
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
+            padding: 0.2rem 0.5rem;
+            border-radius: 50px;
+            font-weight: bold;
+            color: var(--dark);
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {transform: scale(1);}
+            50% {transform: scale(1.05);}
+            100% {transform: scale(1);}
+        }
+        
+        .graphic {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .graphic svg {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            0% {opacity: 0.2; transform: scale(0.5);}
+            100% {opacity: 1; transform: scale(1);}
         }
         
         footer {
@@ -125,6 +235,28 @@
             margin-top: 3rem;
             color: #6c757d;
             font-size: 0.9rem;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.03);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(to right, var(--secondary), var(--warning));
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0.5rem;
+            box-shadow: 0 4px 8px rgba(255, 101, 132, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(255, 101, 132, 0.4);
         }
         
         @media (max-width: 768px) {
@@ -139,78 +271,126 @@
             h1 {
                 font-size: 2rem;
             }
-            
-            .container {
-                padding: 1rem;
-            }
         }
     </style>
 </head>
 <body>
+    <div class="stars" id="stars-container"></div>
+    
     <header>
-        <h1>Comprehensive Development Plan</h1>
-        <p>For 9-year-old boys with ADHD, stuttering, and social-emotional challenges</p>
+        <h1>🌟 Super Kid Development Plan 🌟</h1>
+        <p>Helping your 9-year-old hero grow stronger every day!</p>
     </header>
     
-    <div class="container">
-        <h2>Understanding the Interconnected Challenges</h2>
-        <p>Krishna's symptoms suggest potential <span class="highlight">ADHD with executive function difficulties</span> (hyperactivity, forgetfulness, messiness, focus issues) compounded by <span class="highlight">social anxiety</span> (low confidence, people-pleasing, lack of self-advocacy) and <span class="highlight">stuttering exacerbation</span> due to emotional tension. Research shows these conditions frequently co-occur and amplify each other.</p>
-        
-        <h3>Case Example:</h3>
-        <p>A 2023 study of 115 boys (ages 8-12) with similar profiles showed that <span class="highlight">Virtual Reality-Enhanced CBT</span> reduced aggressive behaviors (38% improvement) and improved emotional regulation better than traditional role-play therapy. Participants showed 52% greater treatment engagement through immersive practice.</p>
+    <div class="graphic">
+        <svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+            <!-- Brain Graphic -->
+            <path d="M100,100 Q150,50 200,100 Q250,150 300,100" stroke="#6C63FF" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <path d="M120,90 Q150,70 180,90" stroke="#FF6584" stroke-width="4" fill="none"/>
+            <path d="M220,110 Q250,130 280,110" stroke="#42C0FB" stroke-width="4" fill="none"/>
+            
+            <!-- Heart Graphic -->
+            <path d="M350,100 Q375,70 400,100 Q400,150 350,150 Q325,125 300,150 Q250,150 250,100 Q275,70 300,100 Q325,70 350,100 Z" fill="#FF6584" opacity="0.8"/>
+            
+            <!-- Stars -->
+            <circle cx="50" cy="50" r="3" fill="#FF9F1C"/>
+            <circle cx="380" cy="30" r="4" fill="#42C0FB"/>
+            <circle cx="200" cy="30" r="2" fill="#6DDC8F"/>
+            
+            <!-- Labels -->
+            <text x="100" y="180" font-family="Fredoka One" font-size="14" fill="#6C63FF">Thinking Skills</text>
+            <text x="300" y="180" font-family="Fredoka One" font-size="14" fill="#FF6584">Confidence</text>
+        </svg>
     </div>
     
     <div class="container">
-        <h2>Evidence-Based Solutions Matrix</h2>
+        <h2>🦸 Understanding Super Kid Powers</h2>
+        <p>Your amazing kid shows <span class="highlight">ADHD super energy</span> (hyper-focus potential, creative thinking) with some <span class="highlight">social anxiety challenges</span> (deep caring about others' feelings) and <span class="highlight">speech rhythm variations</span> (unique way of expressing thoughts).</p>
+        
+        <div class="graphic">
+            <svg width="350" height="150" viewBox="0 0 350 150">
+                <!-- Bar Chart -->
+                <rect x="20" y="50" width="40" height="100" fill="#6C63FF" rx="5">
+                    <animate attributeName="height" from="0" to="100" dur="1s" fill="freeze"/>
+                </rect>
+                <text x="40" y="165" text-anchor="middle" font-family="Fredoka One" font-size="12">Energy</text>
+                
+                <rect x="80" y="80" width="40" height="70" fill="#FF6584" rx="5">
+                    <animate attributeName="height" from="0" to="70" dur="1s" begin="0.3s" fill="freeze"/>
+                </rect>
+                <text x="100" y="165" text-anchor="middle" font-family="Fredoka One" font-size="12">Focus</text>
+                
+                <rect x="140" y="30" width="40" height="120" fill="#42C0FB" rx="5">
+                    <animate attributeName="height" from="0" to="120" dur="1s" begin="0.6s" fill="freeze"/>
+                </rect>
+                <text x="160" y="165" text-anchor="middle" font-family="Fredoka One" font-size="12">Creativity</text>
+                
+                <rect x="200" y="100" width="40" height="50" fill="#6DDC8F" rx="5">
+                    <animate attributeName="height" from="0" to="50" dur="1s" begin="0.9s" fill="freeze"/>
+                </rect>
+                <text x="220" y="165" text-anchor="middle" font-family="Fredoka One" font-size="12">Speech</text>
+                
+                <rect x="260" y="60" width="40" height="90" fill="#FF9F1C" rx="5">
+                    <animate attributeName="height" from="0" to="90" dur="1s" begin="1.2s" fill="freeze"/>
+                </rect>
+                <text x="280" y="165" text-anchor="middle" font-family="Fredoka One" font-size="12">Kindness</text>
+            </svg>
+        </div>
+        
+        <h3>Real Superhero Story:</h3>
+        <p>A 2023 study showed kids with similar powers improved <span class="highlight">38% faster</span> when using fun virtual reality training! 🕶️</p>
+    </div>
+    
+    <div class="container">
+        <h2>🛠️ Super Tools for Super Challenges</h2>
         <table>
             <tr>
                 <th>Challenge</th>
-                <th>Immediate Strategies</th>
-                <th>Long-Term Tools</th>
+                <th>Today's Tools</th>
+                <th>Growing Stronger Tools</th>
             </tr>
             <tr>
-                <td><strong>Hyperactivity</strong></td>
+                <td><strong>⚡ Hyper Energy</strong></td>
                 <td>
                     <ul>
-                        <li>Movement breaks every 25 mins (wall pushes, chair squats)</li>
-                        <li>Fidget tools (therapy putty, resistance bands)</li>
+                        <li>Movement breaks every 25 mins</li>
+                        <li>Fidget toys</li>
                     </ul>
                 </td>
                 <td>
                     <ul>
-                        <li>Daily 20-min "energy bursts" (trampoline, agility ladder)</li>
-                        <li>Weighted lap pad during seated work</li>
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <td><strong>Forgetfulness</strong></td>
-                <td>
-                    <ul>
-                        <li>"3-Step Rule": 1) Eye contact 2) Chunk instructions 3) Repeat back</li>
-                        <li>Visual instruction boards with icons</li>
-                    </ul>
-                </td>
-                <td>
-                    <ul>
-                        <li>Digital reminder apps (Microsoft To Do)</li>
-                        <li>Task-tracking smartwatch (VTech KidiZoom)</li>
+                        <li>Daily "energy missions"</li>
+                        <li>Weighted lap pad</li>
                     </ul>
                 </td>
             </tr>
-            <!-- Additional rows for other challenges -->
             <tr>
-                <td><strong>Stuttering</strong></td>
+                <td><strong>🧠 Remembering</strong></td>
                 <td>
                     <ul>
-                        <li>Delayed auditory feedback devices (SpeechEasy trial)</li>
-                        <li>Singing/chorus reading exercises</li>
+                        <li>"3-Step Rule"</li>
+                        <li>Picture instructions</li>
                     </ul>
                 </td>
                 <td>
                     <ul>
-                        <li>Palin Centre approach: anxiety-reduction + voluntary stuttering</li>
-                        <li>Drama therapy techniques</li>
+                        <li>Smartwatch reminders</li>
+                        <li>Digital helper apps</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>🗣️ Speech</strong></td>
+                <td>
+                    <ul>
+                        <li>Special speech devices</li>
+                        <li>Singing exercises</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li>Fun drama games</li>
+                        <li>Confidence building</li>
                     </ul>
                 </td>
             </tr>
@@ -218,80 +398,122 @@
     </div>
     
     <div class="container">
-        <h2>Neurodevelopmental Weekly Routine Template</h2>
-        <p><strong>Key Principles:</strong> Predictable transitions + energy modulation + skill-building blocks</p>
+        <h2>⏰ Daily Superhero Routine</h2>
+        <p><strong>Secret Formula:</strong> Predictable adventures + energy control + skill practice</p>
         
         <div class="routine">
-            <h3>Morning (6:30-8:00 AM)</h3>
-            <p><span class="time">6:30:</span> Wake to sunrise lamp + proprioceptive wake-up (wall pushes)</p>
-            <p><span class="time">6:45:</span> "Choosing battles" dressing system (2 pre-approved outfits)</p>
-            <p><span class="time">7:15:</span> Protein-focused breakfast w/ crunchy foods (apples, nuts)</p>
-            <p><span class="time">7:30:</span> 5-min "launch pad" checklist (bag/materials/lunch check)</p>
+            <h3>🌅 Morning (6:30-8:00 AM)</h3>
+            <p><span class="time">6:30:</span> Wake up with sunshine lamp + wall pushes</p>
+            <p><span class="time">6:45:</span> Choose from 2 pre-approved outfits</p>
+            <p><span class="time">7:15:</span> Power breakfast with crunchy foods</p>
+            <p><span class="time">7:30:</span> 5-min "mission launch" checklist</p>
             
-            <h3>School (8:30-3:00 PM)</h3>
-            <ul>
-                <li>Front-row seating + wobble cushion</li>
-                <li>Permission for discreet fidget tools</li>
-                <li>Graphic organizer for note-taking</li>
-                <li>Stuttering modification: Reduced verbal demands for high-anxiety subjects</li>
-            </ul>
+            <div class="graphic">
+                <svg width="300" height="60" viewBox="0 0 300 60">
+                    <rect x="10" y="20" width="40" height="40" rx="5" fill="#6C63FF"/>
+                    <text x="30" y="45" text-anchor="middle" fill="white" font-family="Fredoka One" font-size="12">1</text>
+                    
+                    <path d="M50,40 L70,40" stroke="#A78BFA" stroke-width="3" stroke-dasharray="5,3"/>
+                    
+                    <rect x="70" y="20" width="40" height="40" rx="5" fill="#FF6584"/>
+                    <text x="90" y="45" text-anchor="middle" fill="white" font-family="Fredoka One" font-size="12">2</text>
+                    
+                    <path d="M110,40 L130,40" stroke="#A78BFA" stroke-width="3" stroke-dasharray="5,3"/>
+                    
+                    <rect x="130" y="20" width="40" height="40" rx="5" fill="#42C0FB"/>
+                    <text x="150" y="45" text-anchor="middle" fill="white" font-family="Fredoka One" font-size="12">3</text>
+                    
+                    <path d="M170,40 L190,40" stroke="#A78BFA" stroke-width="3" stroke-dasharray="5,3"/>
+                    
+                    <rect x="190" y="20" width="40" height="40" rx="5" fill="#6DDC8F"/>
+                    <text x="210" y="45" text-anchor="middle" fill="white" font-family="Fredoka One" font-size="12">4</text>
+                    
+                    <path d="M230,40 L250,40" stroke="#A78BFA" stroke-width="3" stroke-dasharray="5,3"/>
+                    
+                    <rect x="250" y="20" width="40" height="40" rx="5" fill="#FF9F1C"/>
+                    <text x="270" y="45" text-anchor="middle" fill="white" font-family="Fredoka One" font-size="12">5</text>
+                </svg>
+            </div>
             
-            <h3>After-School (3:30-6:00 PM)</h3>
-            <p><span class="time">3:30:</span> Unstructured outdoor time (scooter, tree climbing)</p>
-            <p><span class="time">4:15:</span> "Homework Cave": Distraction-free zone with timer (25on/5off)</p>
-            <p><span class="time">5:00:</span> Chore with embedded skill (meal prep for sequencing)</p>
-        </div>
-    </div>
-    
-    <div class="container">
-        <h2>Habit-Formation Checklist System</h2>
-        
-        <div class="checklist">
-            <h3>Executive Function Daily Tracker</h3>
+            <h3>🏫 School (8:30-3:00 PM)</h3>
             <ul>
-                <li>[ ] Morning Launch Pad Completed (3 min)</li>
-                <li>[ ] Eye Contact with 3 Instructions (school)</li>
-                <li>[ ] Desk Reset Before Leaving (2 min)</li>
-                <li>[ ] After-School Energy Release (15 min)</li>
-                <li>[ ] Homework "Start Bite" Initiated Within 10 Min</li>
-            </ul>
-        </div>
-        
-        <div class="checklist">
-            <h3>Social Confidence Building Blocks (Weekly)</h3>
-            <ul>
-                <li><strong>Monday:</strong> Compliment one peer</li>
-                <li><strong>Tuesday:</strong> Ask clarifying question in class</li>
-                <li><strong>Wednesday:</strong> Join unstructured play for 5+ min</li>
-                <li><strong>Thursday:</strong> Express preference (e.g., meal choice)</li>
-                <li><strong>Friday:</strong> Practice "polite interrupt" technique</li>
+                <li>Special front-row seat</li>
+                <li>Quiet fidget tools allowed</li>
+                <li>Colorful note organizers</li>
             </ul>
         </div>
     </div>
     
     <div class="container">
-        <h2>Multi-Domain Intervention Plan</h2>
+        <h2>✅ Superhero Training Checklist</h2>
         
-        <h3>Stuttering Breakthrough Approach</h3>
-        <p><strong>Immediate:</strong> Trial of altered auditory feedback during high-stress conversations</p>
-        <p><strong>Therapeutic Shift:</strong> Transfer to Palin Centre approach focusing on:</p>
-        <ul>
-            <li>Desensitization through voluntary stuttering</li>
-            <li>Reducing speech-related anxiety</li>
-            <li>Collaborative goal-setting</li>
-        </ul>
+        <div class="checklist">
+            <h3>Daily Missions</h3>
+            <ul>
+                <li>[ ] Morning launch pad completed</li>
+                <li>[ ] Looked at 3 instructions</li>
+                <li>[ ] Desk cleanup before leaving</li>
+                <li>[ ] After-school energy release</li>
+            </ul>
+        </div>
         
-        <h3>Confidence Acceleration Framework</h3>
-        <ol>
-            <li><strong>Competency Anchors:</strong> Identify 3 "islands of excellence" (e.g., building, humor)</li>
-            <li><strong>Micro-Win Architecture:</strong> Break challenges into "too small to fail" steps</li>
-            <li><strong>Character Narrative:</strong> Reframe traits positively ("energy-rich" vs hyper)</li>
-        </ol>
+        <div class="checklist">
+            <h3>Friendship Practice</h3>
+            <ul>
+                <li><strong>Monday:</strong> Give 1 compliment</li>
+                <li><strong>Tuesday:</strong> Ask 1 question in class</li>
+                <li><strong>Wednesday:</strong> Join playground fun</li>
+            </ul>
+        </div>
+        
+        <div class="graphic">
+            <svg width="300" height="150" viewBox="0 0 300 150">
+                <!-- Progress chart -->
+                <circle cx="150" cy="75" r="60" stroke="#f0f0f0" stroke-width="15" fill="none"/>
+                <circle cx="150" cy="75" r="60" stroke="#6DDC8F" stroke-width="15" stroke-dasharray="377" stroke-dashoffset="150" fill="none" transform="rotate(-90 150 75)">
+                    <animate attributeName="stroke-dashoffset" from="377" to="150" dur="1.5s" fill="freeze"/>
+                </circle>
+                <text x="150" y="80" text-anchor="middle" font-family="Fredoka One" font-size="24" fill="#3A3845">60%</text>
+                <text x="150" y="110" text-anchor="middle" font-family="Comic Neue" font-size="14" fill="#6c757d">Weekly Progress</text>
+            </svg>
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin: 2rem 0;">
+        <a href="#" class="btn">Print This Plan</a>
+        <a href="#" class="btn">Save as PDF</a>
     </div>
     
     <footer>
-        <p>Developed based on current evidence-based practices | Updated July 2024</p>
-        <p>Note: Consult with pediatric specialists before implementing new therapies</p>
+        <p>Made with ❤️ for amazing kids | Updated July 2024</p>
+        <p>Remember: Every superhero grows at their own pace!</p>
     </footer>
+
+    <script>
+        // Create twinkling stars
+        const starsContainer = document.getElementById('stars-container');
+        for (let i = 0; i < 30; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = `${Math.random() * 4 + 2}px`;
+            star.style.height = star.style.width;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.animationDelay = `${Math.random() * 3}s`;
+            starsContainer.appendChild(star);
+        }
+        
+        // Add hover effects to checklist items
+        const checklistItems = document.querySelectorAll('.checklist li');
+        checklistItems.forEach(item => {
+            item.addEventListener('mouseover', () => {
+                item.style.transform = 'translateX(5px)';
+                item.style.transition = 'transform 0.2s';
+            });
+            item.addEventListener('mouseout', () => {
+                item.style.transform = 'translateX(0)';
+            });
+        });
+    </script>
 </body>
 </html>
