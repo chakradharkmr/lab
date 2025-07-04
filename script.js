@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { url: 'storage.html', title: 'Cloud Storage Solutions' },
         { url: 'phone.html',  title: 'Phone Swap' },
         { url: 'NL-CH-IT.html',  title: 'Swiss & Milan Trip' },
-        //{ url: 'about-us.html',
+        { url: 'adhd-ds.html', title: 'ADHD Therapy' },
         //{ url: 'https://myspecialproject.com/demo', title: 'My Awesome Project Demo' }, // Custom title
         //'simple-faq.html'
     ];
