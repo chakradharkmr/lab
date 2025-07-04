@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         //{ url: 'dashboard.html',
         //{ url: 'about-us.html',
         { url: 'https://myspecialproject.com/demo', title: 'My Awesome Project Demo' }, // Custom title
-        'services-page.html',
+        { url: 'phone.html',  title: 'Phone Swap' },
         'simple-faq.html'
     ];
 
