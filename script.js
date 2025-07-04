@@ -6,15 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // For more control, you can provide objects with custom titles.
     const urls = [
         { url: 'summer.html', title: 'Summer Fun in Almere' },
+        { url: 'https://kaveri.net.in/summer2.html', title: 'Almere Summer Guide' }, // Another external URL
         { url: 'https://kaveri.net.in/info2.html', title: 'Almere Activity Guide' }, // External URL example
         { url: 'info.html', title: 'Find Your Spark in Almere' },
         { url: 'storage.html', title: 'Cloud Storage Solutions' },
-        { url: 'https://kaveri.net.in/summer2.html', title: 'Almere Summer Guide' }, // Another external URL
-        //{ url: 'dashboard.html',
-        //{ url: 'about-us.html',
-        { url: 'https://myspecialproject.com/demo', title: 'My Awesome Project Demo' }, // Custom title
         { url: 'phone.html',  title: 'Phone Swap' },
-        'simple-faq.html'
+        { url: 'NL-CH-IT.html',  title: 'Swiss & Milan Trip' },
+        //{ url: 'about-us.html',
+        //{ url: 'https://myspecialproject.com/demo', title: 'My Awesome Project Demo' }, // Custom title
+        //'simple-faq.html'
     ];
 
     // Helper function to capitalize the first letter of each word
