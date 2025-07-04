@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { url: 'phone.html',  title: 'Phone Swap' },
         { url: 'NL-CH-IT.html',  title: 'Swiss & Milan Trip' },
         { url: 'adhd-ds.html', title: 'ADHD Basics' },
-        { url: 'adhd-ds.html', title: 'ADHD Therapy Plan' },
+        { url: 'adhd.html', title: 'ADHD Therapy Plan' },
         //'simple-faq.html'
     ];
 
