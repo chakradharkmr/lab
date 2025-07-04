@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Super Skills Cheatsheet!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Playful & Encouraging (Bright Blues, Sunny Yellows, Energetic Greens, Soft Pinks, with a clean white base) -->
+    <!-- Application Structure Plan: A single-page, vertically scrolling interactive cheatsheet. It is divided into clear, visually distinct sections: a welcoming hero, daily checklists (Morning, Homework, Evening) with interactive checkboxes, and "Super Skills" sections presented as accordions for quick, actionable tips. This structure is designed to be intuitive and engaging for a 9-year-old, allowing them to easily navigate and interact with their daily tasks and learn new strategies. -->
+    <!-- Visualization & Content Choices: Content is highly visual and action-oriented. 1) Daily Routines: Report's routine/checklist tables -> Goal: Make daily tasks fun & trackable -> Viz: Interactive checklists with emojis -> Interaction: Click checkboxes, reset button, NEW export button. Justification: Direct, empowering, provides accomplishment, and allows sharing. 2) Super Skills: Report's strategies for behavior, social-emotional, stuttering, self-care -> Goal: Provide quick, memorable tips -> Viz: Accordion sections with emojis and short phrases -> Interaction: Click to expand/collapse. Justification: Keeps information digestible and allows focus on specific areas as needed, now with more kid-friendly language. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Comic Neue', cursive; /* More kid-friendly font */
+            background-color: #FDFDFD; /* Brighter white */
+            color: #2C3E50;
+        }
+        .header-bg {
+            background: linear-gradient(to right, #6EE7B7, #3B82F6); /* Energetic gradient */
+        }
+        .section-bounce-in {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .section-bounce-in.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .checklist-card {
+            background-color: #FFFFFF;
+            border: 2px solid #E0E0E0;
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        }
+        .checklist-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+        .checklist-item label {
+            transition: color 0.3s, text-decoration 0.3s;
+            cursor: pointer;
+        }
+        .checklist-item input:checked + label {
+            text-decoration: line-through;
+            color: #9CA3AF; /* Muted gray for completed items */
+        }
+        .accordion-header {
+            background-color: #87CEEB; /* Sky Blue */
+            color: white;
+            transition: background-color 0.3s, transform 0.2s ease-out;
+        }
+        .accordion-header:hover {
+            background-color: #64B5F6; /* Darker Blue */
+            transform: translateY(-2px);
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+            background-color: #EBF8FF; /* Lighter blue background for content */
+        }
+        .button-group button {
+            background-color: #FFD700; /* Gold/Yellow */
+            color: #333;
+            transition: background-color 0.3s, transform 0.2s ease-out;
+        }
+        .button-group button:hover {
+            background-color: #FFC107; /* Darker Gold */
+            transform: translateY(-2px);
+        }
+        .hero-button {
+            background: linear-gradient(to right, #FFD700, #FF6F61); /* Warm gradient */
+            color: white;
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+        .hero-button:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+        .copy-message {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            color: #3B82F6;
+            font-weight: bold;
+        }
+        .copy-message.visible {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="header-bg py-6 shadow-lg">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white drop-shadow-md">
+                My Super Skills Cheatsheet! ✨
+            </h1>
+            <p class="mt-2 text-lg text-white/90">
+                Your daily guide to being awesome!
+            </p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-16">
+
+        <section id="hero" class="text-center mb-16 md:mb-24 section-bounce-in">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#2C3E50] mb-4">
+                Hey Super Kid! 👋
+            </h2>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-700 mb-8">
+                This page is your secret weapon to remember things, stay organized, feel super confident, and be a great friend! Let's make every day a win!
+            </p>
+            <a href="#daily-missions" class="hero-button font-bold py-4 px-10 rounded-full shadow-xl inline-block">
+                Start Your Missions! 🚀
+            </a>
+        </section>
+
+        <section id="daily-missions" class="py-16 md:py-20 section-bounce-in">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#2C3E50]">
+                    Your Daily Missions! ✅
+                </h2>
+                <p class="mt-4 text-lg text-gray-700 max-w-2xl mx-auto">
+                    Check off each step as you go! Every check is a win!
+                </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Morning Checklist -->
+                <div class="checklist-card p-6 rounded-xl shadow-md">
+                    <h3 class="font-bold text-2xl mb-4 text-[#3B82F6]">☀️ Morning Power-Up!</h3>
+                    <div class="space-y-3" id="morning-checklist">
+                        <div class="checklist-item"><input type="checkbox" id="m1" class="mr-2 accent-[#3B82F6] w-5 h-5"><label for="m1">Bathroom time! 🚽</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="m2" class="mr-2 accent-[#3B82F6] w-5 h-5"><label for="m2">Dress up! (Clothes ready? 💪)</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="m3" class="mr-2 accent-[#3B82F6] w-5 h-5"><label for="m3">Yummy breakfast! 🍳</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="m4" class="mr-2 accent-[#3B82F6] w-5 h-5"><label for="m4">Brush teeth! 😁</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="m5" class="mr-2 accent-[#3B82F6] w-5 h-5"><label for="m5">Pack backpack! 🎒</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="m6" class="mr-2 accent-[#3B82F6] w-5 h-5"><label for="m6">Shoes & coat on! 👟🧥</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="m7" class="mr-2 accent-[#3B82F6] w-5 h-5"><label for="m7">Quick wiggles! (Jump, stretch!) 🤸</label></div>
+                    </div>
+                </div>
+                <!-- Homework Checklist -->
+                <div class="checklist-card p-6 rounded-xl shadow-md">
+                    <h3 class="font-bold text-2xl mb-4 text-[#FFD700]">📚 Homework Hero Time!</h3>
+                    <div class="space-y-3" id="homework-checklist">
+                        <div class="checklist-item"><input type="checkbox" id="h1" class="mr-2 accent-[#FFD700] w-5 h-5"><label for="h1">Go to your spot! 🌟</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="h2" class="mr-2 accent-[#FFD700] w-5 h-5"><label for="h2">Get your tools! ✏️📚</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="h3" class="mr-2 accent-[#FFD700] w-5 h-5"><label for="h3">Check your mission! (Planner) ✅</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="h4" class="mr-2 accent-[#FFD700] w-5 h-5"><label for="h4">Big job? Break it down! 👇</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="h5" class="mr-2 accent-[#FFD700] w-5 h-5"><label for="h5">Set your timer! ⏱️ (20 mins focus)</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="h6" class="mr-2 accent-[#FFD700] w-5 h-5"><label for="h6">Brain break! (5 mins fun!) 🧠</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="h7" class="mr-2 accent-[#FFD700] w-5 h-5"><label for="h7">Repeat! (Work, break, work!) 🔄</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="h8" class="mr-2 accent-[#FFD700] w-5 h-5"><label for="h8">Parent check! (High five!) 🙌</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="h9" class="mr-2 accent-[#FFD700] w-5 h-5"><label for="h9">Backpack it! 🎒</label></div>
+                    </div>
+                </div>
+                <!-- Evening Checklist -->
+                <div class="checklist-card p-6 rounded-xl shadow-md">
+                    <h3 class="font-bold text-2xl mb-4 text-[#FF6F61]">🌙 Evening Wind-Down!</h3>
+                    <div class="space-y-3" id="evening-checklist">
+                        <div class="checklist-item"><input type="checkbox" id="e1" class="mr-2 accent-[#FF6F61] w-5 h-5"><label for="e1">Tidy up! 🧹</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="e2" class="mr-2 accent-[#FF6F61] w-5 h-5"><label for="e2">Bath/shower time! 🛀</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="e3" class="mr-2 accent-[#FF6F61] w-5 h-5"><label for="e3">PJs on! �👖</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="e4" class="mr-2 accent-[#FF6F61] w-5 h-5"><label for="e4">Brush teeth! 😁</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="e5" class="mr-2 accent-[#FF6F61] w-5 h-5"><label for="e5">Read a cool book! 📖</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="e6" class="mr-2 accent-[#FF6F61] w-5 h-5"><label for="e6">Chat about your day! (Good & not-so-good) 💬</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="e7" class="mr-2 accent-[#FF6F61] w-5 h-5"><label for="e7">Clothes for tomorrow! 👕</label></div>
+                        <div class="checklist-item"><input type="checkbox" id="e8" class="mr-2 accent-[#FF6F61] w-5 h-5"><label for="e8">Bedtime chill! 😴</label></div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-10 space-x-4 button-group">
+                <button id="reset-all-checklists" class="font-bold py-3 px-8 rounded-full shadow-md">
+                    Reset All Missions! 🔄
+                </button>
+                <button id="export-checklists" class="font-bold py-3 px-8 rounded-full shadow-md">
+                    Share My Progress! 📲
+                </button>
+                <p id="copy-message" class="copy-message mt-2">Copied to clipboard! 🎉</p>
+            </div>
+        </section>
+
+        <section id="super-skills" class="py-16 md:py-20 section-bounce-in bg-[#EBF8FF] rounded-2xl p-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#2C3E50]">
+                    Your Super Skills! 🌟
+                </h2>
+                <p class="mt-4 text-lg text-gray-700 max-w-2xl mx-auto">
+                    Quick tips to make every day easier and more fun! Click to reveal!
+                </p>
+            </div>
+            <div class="max-w-3xl mx-auto space-y-4">
+                <!-- Focus Power -->
+                <div class="accordion-item rounded-xl shadow-md overflow-hidden">
+                    <button class="accordion-header w-full text-left p-5 font-bold text-xl flex justify-between items-center rounded-xl">
+                        <span>Focus Power! 🧠</span>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content px-5 py-3">
+                        <ul class="list-disc list-inside space-y-2 text-gray-700 text-base">
+                            <li>Timer power! ⏱️ (Like a game clock for focus!).</li>
+                            <li>Wiggle breaks! 🤸 (Shake out the sillies!).</li>
+                            <li>Big jobs? Tiny steps! 👇 (Like eating a giant cookie one bite at a time!).</li>
+                            <li>Super quiet spot! 🤫 (Your brain's secret hideout!).</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Confidence Boost -->
+                <div class="accordion-item rounded-xl shadow-md overflow-hidden">
+                    <button class="accordion-header w-full text-left p-5 font-bold text-xl flex justify-between items-center rounded-xl">
+                        <span>Confidence Boost! ✨</span>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content px-5 py-3">
+                        <ul class="list-disc list-inside space-y-2 text-gray-700 text-base">
+                            <li>Your try is your superpower! 💪 (Even if it's tricky!).</li>
+                            <li>Do what makes you shine! 🌟 (Like drawing or building!).</li>
+                            <li>Try new adventures! 🌱 (Even tiny ones!).</li>
+                            <li>Fun time with grown-ups! 🤗 (They love you!).</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Friendship Fun -->
+                <div class="accordion-item rounded-xl shadow-md overflow-hidden">
+                    <button class="accordion-header w-full text-left p-5 font-bold text-xl flex justify-between items-center rounded-xl">
+                        <span>Friendship Fun! 🧑‍🤝‍🧑</span>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content px-5 py-3">
+                        <ul class="list-disc list-inside space-y-2 text-gray-700 text-base">
+                            <li>Friendship practice! 🗣️ (Like playing a game with words!).</li>
+                            <li>Guess feelings! 🤔 (What are they thinking?).</li>
+                            <li>Listen to their stuff! 👂 (Even if it's not your favorite!).</li>
+                            <li>Be the first to say 'Hi!' 👋 (You're a friendship starter!).</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Speak Easy -->
+                <div class="accordion-item rounded-xl shadow-md overflow-hidden">
+                    <button class="accordion-header w-full text-left p-5 font-bold text-xl flex justify-between items-center rounded-xl">
+                        <span>Speak Easy! 💬</span>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content px-5 py-3">
+                        <ul class="list-disc list-inside space-y-2 text-gray-700 text-base">
+                            <li>Slow and steady wins the race! 🐢 (Take your time talking!).</li>
+                            <li>Grown-ups are super listeners! 👂 (They'll wait!).</li>
+                            <li>Bumps are okay! 👍 (Like speed bumps on a road!).</li>
+                            <li>Talk about how you feel! ❤️ (Your feelings matter!).</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- My Body, My Rules -->
+                <div class="accordion-item rounded-xl shadow-md overflow-hidden">
+                    <button class="accordion-header w-full text-left p-5 font-bold text-xl flex justify-between items-center rounded-xl">
+                        <span>My Body, My Rules! 👕🍎🗣️</span>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content px-5 py-3">
+                        <ul class="list-disc list-inside space-y-2 text-gray-700 text-base">
+                            <li>Comfy clothes first! 👕 (No scratchy tags!).</li>
+                            <li>Pick your yummy food! 🥕 (Help choose!).</li>
+                            <li>Calm eating, no screens! 🍽️ (Focus on your food!).</li>
+                            <li>Secret signal to talk! 🤫 (Your special sign!).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-[#3B82F6] text-white mt-16">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p class="text-lg">You are amazing! Keep shining! ✨</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const sections = document.querySelectorAll('.section-bounce-in');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.2 });
+
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+
+    const resetBtn = document.getElementById('reset-all-checklists');
+    resetBtn.addEventListener('click', () => {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(box => box.checked = false);
+    });
+    
+    const exportBtn = document.getElementById('export-checklists');
+    const copyMessage = document.getElementById('copy-message');
+
+    exportBtn.addEventListener('click', () => {
+        let exportText = "🌟 My Super Skills Missions! 🌟\n\n";
+
+        // Morning Checklist
+        exportText += "☀️ Morning Power-Up!:\n";
+        document.querySelectorAll('#morning-checklist .checklist-item').forEach(item => {
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            const label = item.querySelector('label').textContent;
+            exportText += `${checkbox.checked ? '✅' : '❌'} ${label}\n`;
+        });
+        exportText += "\n";
+
+        // Homework Checklist
+        exportText += "📚 Homework Hero Time!:\n";
+        document.querySelectorAll('#homework-checklist .checklist-item').forEach(item => {
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            const label = item.querySelector('label').textContent;
+            exportText += `${checkbox.checked ? '✅' : '❌'} ${label}\n`;
+        });
+        exportText += "\n";
+
+        // Evening Checklist
+        exportText += "🌙 Evening Wind-Down!:\n";
+        document.querySelectorAll('#evening-checklist .checklist-item').forEach(item => {
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            const label = item.querySelector('label').textContent;
+            exportText += `${checkbox.checked ? '✅' : '❌'} ${label}\n`;
+        });
+        exportText += "\n🚀 Keep up the awesome work!\n";
+
+        // Copy to clipboard
+        const textarea = document.createElement('textarea');
+        textarea.value = exportText;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+
+        // Show copy message
+        copyMessage.classList.add('visible');
+        setTimeout(() => {
+            copyMessage.classList.remove('visible');
+        }, 3000);
+    });
+
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            const content = header.nextElementSibling;
+            const arrow = header.querySelector('span:last-child');
+            
+            // Close other open accordions
+            document.querySelectorAll('.accordion-content').forEach(c => {
+                if (c !== content && c.style.maxHeight) {
+                    c.style.maxHeight = null;
+                    c.previousElementSibling.querySelector('span:last-child').style.transform = 'rotate(0deg)';
+                }
+            });
+
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                arrow.style.transform = 'rotate(0deg)';
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                arrow.style.transform = 'rotate(180deg)';
+            }
+        });
+    });
+
+    // Set initial visible section (hero)
+    if(window.scrollY < 200) {
+        document.getElementById('hero').classList.add('visible');
+    }
+});
+</script>
+</body>
+</html>
+�
