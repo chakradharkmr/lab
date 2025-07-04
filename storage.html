@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 
+    Infographic Plan Summary:
+    Narrative: Guide a user from the initial dilemma (Subscription vs. Lifetime) through detailed comparisons of providers, features, and costs, culminating in a decision-making flowchart and final recommendations.
+    Structure:
+    1. Header & Introduction: Hook the user with the core problem, referencing the report.
+    2. The Core Dilemma: Visually compare Subscription vs. Lifetime models.
+    3. Titans of Sync: Showcase mainstream subscription providers with a cost comparison chart and detailed feature breakdowns.
+    4. The Lifetime Wager: Analyze one-time payment options with cost and trade-off visualizations, plus in-depth provider details.
+    5. Feature Face-Off: Directly contrast AI convenience with zero-knowledge privacy.
+    6. Niche & Specialized Solutions: Highlight unique offerings for specific media needs.
+    7. The True Cost: Lifetime vs. Subscription Over Time: Detailed financial comparison and trade-offs.
+    8. Decision Flowchart: An interactive-style guide to help users choose.
+    9. Final Recommendations: Conclude with top picks for different user profiles.
+
+    Visualization Selection Summary:
+    - Subscription vs. Lifetime Pros/Cons: Goal: Organize. Vis: Two-column HTML/CSS layout. Method: Tailwind CSS. NO SVG.
+    - Mainstream Provider Cost Comparison: Goal: Compare. Vis: Bar Chart. Method: Chart.js/Canvas. NO SVG.
+    - Lifetime Provider Cost Comparison: Goal: Compare. Vis: Horizontal Bar Chart. Method: Chart.js/Canvas. NO SVG.
+    - Lifetime Provider Trade-offs: Goal: Compare. Vis: Radar Chart. Method: Chart.js/Canvas. NO SVG.
+    - AI vs. Privacy Trade-off: Goal: Compare. Vis: Two-sided HTML/CSS diagram. Method: Tailwind CSS. NO SVG.
+    - Decision Flowchart: Goal: Organize. Vis: Flowchart. Method: Structured HTML/CSS with Tailwind borders to simulate connectors. NO SVG, NO MERMAID JS.
+    - Final Recommendations: Goal: Inform. Vis: Styled HTML "cards". Method: Tailwind CSS. NO SVG.
+
+    Color Palette Selection:
+    Palette: Brilliant Blues (#00A1E4, #00B5E2, #75C8E4, #B2DDE4, #E8F2E4) - Chosen for its vibrant, modern, and professional feel, providing excellent contrast for data visualization.
+
+    Constraint Confirmation:
+    NEITHER Mermaid JS NOR SVG were used anywhere in this output. All charts are rendered on HTML Canvas elements via Chart.js, and diagrams are constructed using structured HTML and styled with Tailwind CSS.
+    -->
+    <title>Cloud Storage Infographic: 1TB+ Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .flowchart-node {
+            border: 2px solid #75C8E4;
+            background-color: #ffffff;
+            color: #1a202c;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .flowchart-connector {
+            width: 2px;
+            background-color: #75C8E4;
+            margin: 0 auto;
+        }
+        .flowchart-connector-horizontal {
+            height: 2px;
+            background-color: #75C8E4;
+            flex-grow: 1;
+        }
+        .kpi-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-black text-gray-900 leading-tight">Finding Your Digital Attic</h1>
+            <p class="text-xl md:text-2xl text-[#00A1E4] font-semibold mt-2">A Visual Guide to 1TB+ Cloud Storage Solutions</p>
+            <p class="max-w-3xl mx-auto mt-4 text-gray-600">Navigating the world of cloud storage can be complex, especially for large photo and video libraries. This guide, based on a comprehensive analysis, breaks down key options, features, and costs to help you find the perfect home for your media.</p>
+        </header>
+
+        <section id="dilemma" class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8">The Core Dilemma: Subscription vs. Lifetime</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">Choosing between recurring payments and a one-time purchase is the first major decision, each coming with its own set of advantages and inherent risks.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg shadow-lg p-6 border-t-4 border-[#00A1E4]">
+                    <h3 class="text-2xl font-bold mb-4 text-center">🔄 Subscription Model</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start"><span class="text-green-500 mr-3 text-2xl">✓</span><div><strong class="text-gray-900">Cutting-Edge Features:</strong> Constant updates, latest AI for photo organization, and mature, reliable sync.</div></li>
+                        <li class="flex items-start"><span class="text-green-500 mr-3 text-2xl">✓</span><div><strong class="text-gray-900">High Reliability:</strong> Backed by major tech companies with robust infrastructure and and responsive support.</div></li>
+                        <li class="flex items-start"><span class="text-red-500 mr-3 text-2xl">✗</span><div><strong class="text-gray-900">Recurring Costs:</strong> Continuous monthly or annual payments add up over time, potentially leading to subscription fatigue.</div></li>
+                        <li class="flex items-start"><span class="text-red-500 mr-3 text-2xl">✗</span><div><strong class="text-gray-900">Potential Privacy Trade-offs:</strong> Server-side AI processing is required for advanced features, meaning data is readable by the service.</div></li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 border-t-4 border-[#75C8E4]">
+                    <h3 class="text-2xl font-bold mb-4 text-center">💎 Lifetime (One-Time Payment)</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start"><span class="text-green-500 mr-3 text-2xl">✓</span><div><strong class="text-gray-900">Long-Term Value:</strong> Pay once and avoid subscription fatigue. A hedge against future price increases.</div></li>
+                        <li class="flex items-start"><span class="text-green-500 mr-3 text-2xl">✓</span><div><strong class="text-gray-900">Strong Privacy Options:</strong> Many offer client-side, zero-knowledge encryption, ensuring only you can access your data.</div></li>
+                        <li class="flex items-start"><span class="text-red-500 mr-3 text-2xl">✗</span><div><strong class="text-gray-900">Company Longevity Risk:</strong> The "lifetime" is only as long as the company remains operational.</div></li>
+                        <li class="flex items-start"><span class="text-red-500 mr-3 text-2xl">✗</span><div><strong class="text-gray-900">Feature Stagnation:</strong> May lack the continuous innovation, bug fixes, and evolving AI of subscription models.</div></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="titans" class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-2">The Titans of Sync: Mainstream Subscription Leaders</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">These established providers offer robust platforms with powerful features for media management, justifying their recurring cost with reliability and convenience.</p>
+            <div class="kpi-card mb-8">
+                <h3 class="text-xl font-bold text-center mb-4">Annual Cost for 1TB & 2TB Plans</h3>
+                 <div class="chart-container">
+                    <canvas id="subscriptionCostChart"></canvas>
+                </div>
+                <p class="text-center text-sm text-gray-500 mt-4">Microsoft 365 offers the most cost-effective entry point at 1TB, which also includes its full Office suite. Google One and Dropbox offer more storage at the 2TB tier for a similar price point.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="kpi-card border-t-4 border-[#00A1E4]">
+                    <h3 class="text-2xl font-bold mb-2 text-center">Google One</h3>
+                    <p class="text-sm text-gray-600 mb-4 text-center">(with Google Photos)</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong class="font-semibold">AI Organization:</strong> Unparalleled facial recognition, object/text/location search, photo stacking, and "Memories."</li>
+                        <li><strong class="font-semibold">Auto-Sync:</strong> Seamless and highly reliable automatic camera roll backup.</li>
+                        <li><strong class="font-semibold">RAW Support:</strong> Yes, via Google Photos.</li>
+                        <li><strong class="font-semibold">Ecosystem:</strong> Deeply integrated with Google services.</li>
+                    </ul>
+                </div>
+                <div class="kpi-card border-t-4 border-[#00B5E2]">
+                    <h3 class="text-2xl font-bold mb-2 text-center">Microsoft OneDrive</h3>
+                    <p class="text-sm text-gray-600 mb-4 text-center">(with Microsoft 365)</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong class="font-semibold">AI Organization:</strong> Automatic tagging, location search, and upcoming facial grouping.</li>
+                        <li><strong class="font-semibold">Auto-Sync:</strong> Reliable automatic camera roll backup.</li>
+                        <li><strong class="font-semibold">Value Add:</strong> Includes full Microsoft 365 suite (Word, Excel, etc.), enhancing overall cost-effectiveness.</li>
+                        <li><strong class="font-semibold">Gallery:</strong> Customizable gallery view for fast browsing.</li>
+                    </ul>
+                </div>
+                <div class="kpi-card border-t-4 border-[#75C8E4]">
+                    <h3 class="text-2xl font-bold mb-2 text-center">Dropbox</h3>
+                    <p class="text-sm text-gray-600 mb-4 text-center">(Plus Plan)</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong class="font-semibold">Auto-Sync:</strong> Renowned "best-in-class sync technology" for comprehensive media backup.</li>
+                        <li><strong class="font-semibold">Media Previews:</strong> Supports over 35 image types, including high-quality RAW formats.</li>
+                        <li><strong class="font-semibold">Organization:</strong> Strong folder-based management, searchable hashtags.</li>
+                        <li><strong class="font-semibold">Future AI:</strong> Investing in generative AI for "Summarize & Ask" (currently text/transcripts).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="lifetime" class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-2">The Lifetime Wager: One-Time Payment Contenders</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">Lifetime deals promise an escape from monthly fees, but come with a spectrum of features, reliability, and risks. The upfront cost is often significantly lower over the long term.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="kpi-card">
+                    <h3 class="text-xl font-bold text-center mb-4">One-Time Cost for Lifetime Storage</h3>
+                    <div class="chart-container h-[400px]">
+                        <canvas id="lifetimeCostChart"></canvas>
+                    </div>
+                     <p class="text-center text-sm text-gray-500 mt-4">Internxt and Koofr offer incredibly low entry points for 1TB. pCloud and Icedrive offer more storage, with pCloud being a more established and often-recommended choice in the lifetime space.</p>
+                </div>
+                <div class="kpi-card">
+                    <h3 class="text-xl font-bold text-center mb-4">Provider Trade-Offs Analysis (Rated 1-5, 5=Best)</h3>
+                    <div class="chart-container h-[400px]">
+                        <canvas id="tradeoffRadarChart"></canvas>
+                    </div>
+                     <p class="text-center text-sm text-gray-500 mt-4">This chart illustrates the core trade-offs. Internxt excels in privacy but is rated lower on features and user-reported reliability. pCloud offers a strong balance, while Icedrive's user-reported reliability issues impact its score despite good features.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="kpi-card border-t-4 border-[#00A1E4]">
+                    <h3 class="text-2xl font-bold mb-2 text-center">pCloud</h3>
+                    <p class="text-sm text-gray-600 mb-4 text-center">(Premium Plus 2TB)</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong class="font-semibold">Reliability:</strong> Generally positive user feedback over several years; reliable sync.</li>
+                        <li><strong class="font-semibold">Media Features:</strong> RAW file support, photo/video previews, slideshows, manual tagging.</li>
+                        <li><strong class="font-semibold">Privacy:</strong> Optional client-side, zero-knowledge encryption (pCloud Crypto).</li>
+                        <li><strong class="font-semibold">Access:</strong> "pCloud Drive" for virtual access without local storage.</li>
+                    </ul>
+                </div>
+                <div class="kpi-card border-t-4 border-[#00B5E2]">
+                    <h3 class="text-2xl font-bold mb-2 text-center">Internxt</h3>
+                    <p class="text-sm text-gray-600 mb-4 text-center">(1TB Plan)</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong class="font-semibold">Privacy:</strong> Extreme focus with open-source, end-to-end, zero-knowledge, and post-quantum encryption.</li>
+                        <li><strong class="font-semibold">Security:</strong> Data sharded across decentralized servers; includes VPN & Antivirus.</li>
+                        <li><strong class="font-semibold">Media Features:</strong> RAW support, private albums, virtual drive, global search.</li>
+                        <li><strong class="font-semibold">User Experience:</strong> User reports of clunky UI, unreliable sync, slow speeds, and barebones features (no file versioning).</li>
+                    </ul>
+                </div>
+                <div class="kpi-card border-t-4 border-[#75C8E4]">
+                    <h3 class="text-2xl font-bold mb-2 text-center">Icedrive</h3>
+                    <p class="text-sm text-gray-600 mb-4 text-center">(Life 2K 2TB)</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong class="font-semibold">Interface:</strong> Praised for "gorgeous" UI and intuitive virtual drive.</li>
+                        <li><strong class="font-semibold">Privacy:</strong> Client-side, zero-knowledge encryption for dedicated folders.</li>
+                        <li><strong class="font-semibold">Reliability Concerns:</strong> Frequent user reports of unreliable auto-upload/sync (skipped files, slow speeds), and potential data loss/corruption.</li>
+                        <li><strong class="font-semibold">Sync Caveat:</strong> Desktop app must be running for sync.</li>
+                    </ul>
+                </div>
+                <div class="kpi-card border-t-4 border-[#B2DDE4]">
+                    <h3 class="text-2xl font-bold mb-2 text-center">Koofr</h3>
+                    <p class="text-sm text-gray-600 mb-4 text-center">(1TB Plan)</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong class="font-semibold">Unique Feature:</strong> Unified search across connected cloud accounts (Dropbox, Google Drive, OneDrive).</li>
+                        <li><strong class="font-semibold">Privacy:</strong> Strong emphasis on privacy, GDPR compliant, client-side encryption (Koofr Vault).</li>
+                        <li><strong class="font-semibold">Media Features:</strong> Auto mobile backup, built-in image editor, social media export.</li>
+                        <li><strong class="font-semibold">Reliability Concerns:</strong> Significant user reports of files going missing, sync issues, and slow app performance.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8">Feature Face-Off: AI Convenience vs. Absolute Privacy</h2>
+             <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">Your choice of provider often comes down to this fundamental trade-off. Do you want a service that intelligently organizes your photos for you, or one that cannot see your data at all?</p>
+            <div class="relative flex items-center justify-center">
+                 <div class="absolute text-5xl font-black text-gray-300 z-0">VS</div>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+                     <div class="kpi-card border-t-4 border-[#00A1E4] text-center z-10">
+                        <h3 class="text-2xl font-bold mb-2">🧠 Maximum Convenience</h3>
+                        <p class="font-semibold text-gray-700 mb-4">(Server-Side AI Processing)</p>
+                        <p class="mb-4">Services scan your photos on their servers to automatically identify faces, objects, and text, making search effortless and providing smart albums and memories.</p>
+                        <strong class="text-gray-900">Key Players:</strong>
+                        <p>Google Photos, Microsoft OneDrive</p>
+                     </div>
+                     <div class="kpi-card border-t-4 border-[#75C8E4] text-center z-10">
+                         <h3 class="text-2xl font-bold mb-2">🛡️ Maximum Privacy</h3>
+                         <p class="font-semibold text-gray-700 mb-4">(Zero-Knowledge Encryption)</p>
+                         <p class="mb-4">Data is encrypted on your device *before* upload. The provider cannot access, view, or process your files, ensuring absolute privacy but limiting server-side AI features.</p>
+                         <strong class="text-gray-900">Key Players:</strong>
+                         <p>Internxt, pCloud (Crypto), Icedrive, Koofr (Vault)</p>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="niche" class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-2">Niche & Specialized Solutions for Media</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">Beyond general cloud storage, some providers offer tailored experiences for specific media needs, often with unique features or pricing models.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="kpi-card border-t-4 border-[#00A1E4]">
+                    <h3 class="text-2xl font-bold mb-2 text-center">SmugMug</h3>
+                    <p class="text-sm text-gray-600 mb-4 text-center">(For Photographers)</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong class="font-semibold">Unlimited Storage:</strong> For photos and videos (with Direct plan).</li>
+                        <li><strong class="font-semibold">Professional Tools:</strong> Website builder, selling tools, Lightroom/Capture One compatibility.</li>
+                        <li><strong class="font-semibold">Organization:</strong> "Organizer" for keywording, Smart Galleries based on keywords.</li>
+                        <li><strong class="font-semibold">RAW Support:</strong> Supports almost all RAW file types.</li>
+                    </ul>
+                </div>
+                <div class="kpi-card border-t-4 border-[#00B5E2]">
+                    <h3 class="text-2xl font-bold mb-2 text-center">Backblaze Personal Backup</h3>
+                    <p class="text-sm text-gray-600 mb-4 text-center">(Unlimited Backup)</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong class="font-semibold">Unlimited Storage:</strong> Flat rate for unlimited backup of computers & external drives.</li>
+                        <li><strong class="font-semibold">Set-and-Forget:</strong> Continuous, automatic backups with no file type/size restrictions.</li>
+                        <li><strong class="font-semibold">RAW Support:</strong> Handles RAW files smoothly with fast uploads.</li>
+                        <li><strong class="font-semibold">Focus:</strong> Primarily a backup service, not a media management platform (lacks AI organization).</li>
+                    </ul>
+                </div>
+                <div class="kpi-card border-t-4 border-[#75C8E4]">
+                    <h3 class="text-2xl font-bold mb-2 text-center">Mylio Photos</h3>
+                    <p class="text-sm text-gray-600 mb-4 text-center">(Private, Local-First Management)</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong class="font-semibold">Local AI:</strong> Fast, local AI for face recognition, SmartTags, and duplicate removal (no internet needed).</li>
+                        <li><strong class="font-semibold">Cloud-Independent:</strong> Unifies photos from multiple sources into one searchable library, syncs peer-to-peer.</li>
+                        <li><strong class="font-semibold">Privacy:</strong> AI processing done on your device, not on provider servers.</li>
+                        <li><strong class="font-semibold">Storage Model:</strong> Cloud storage (Mylio Vaults) is optional; focuses on managing distributed library.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="true-cost" class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-2">The True Cost: Lifetime vs. Subscription Over Time</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">While lifetime deals offer significant upfront savings, understanding the long-term financial implications and inherent risks is crucial for a truly cost-effective decision.</p>
+            <div class="kpi-card mb-8 overflow-x-auto">
+                <h3 class="text-xl font-bold text-center mb-4">Cumulative Cost Analysis (5, 10, 20 Years)</h3>
+                <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+                    <thead>
+                        <tr class="bg-[#B2DDE4] text-gray-900">
+                            <th class="py-3 px-4 border-b text-left">Provider</th>
+                            <th class="py-3 px-4 border-b text-left">Storage</th>
+                            <th class="py-3 px-4 border-b text-left">Payment Model</th>
+                            <th class="py-3 px-4 border-b text-left">Cost (Annual/One-time)</th>
+                            <th class="py-3 px-4 border-b text-left">5-Year Cost</th>
+                            <th class="py-3 px-4 border-b text-left">10-Year Cost</th>
+                            <th class="py-3 px-4 border-b text-left">20-Year Cost</th>
+                            <th class="py-3 px-4 border-b text-left">Break-Even Point</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 border-b">Google One</td>
+                            <td class="py-3 px-4 border-b">2 TB</td>
+                            <td class="py-3 px-4 border-b">Subscription</td>
+                            <td class="py-3 px-4 border-b">$119.88/year</td>
+                            <td class="py-3 px-4 border-b">$599.40</td>
+                            <td class="py-3 px-4 border-b">$1198.80</td>
+                            <td class="py-3 px-4 border-b">$2397.60</td>
+                            <td class="py-3 px-4 border-b">N/A</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 border-b">Microsoft 365 Personal</td>
+                            <td class="py-3 px-4 border-b">1 TB</td>
+                            <td class="py-3 px-4 border-b">Subscription</td>
+                            <td class="py-3 px-4 border-b">$99.99/year</td>
+                            <td class="py-3 px-4 border-b">$499.95</td>
+                            <td class="py-3 px-4 border-b">$999.90</td>
+                            <td class="py-3 px-4 border-b">$1999.80</td>
+                            <td class="py-3 px-4 border-b">N/A</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 border-b">Dropbox Plus</td>
+                            <td class="py-3 px-4 border-b">2 TB</td>
+                            <td class="py-3 px-4 border-b">Subscription</td>
+                            <td class="py-3 px-4 border-b">$119.88/year</td>
+                            <td class="py-3 px-4 border-b">$599.40</td>
+                            <td class="py-3 px-4 border-b">$1198.80</td>
+                            <td class="py-3 px-4 border-b">$2397.60</td>
+                            <td class="py-3 px-4 border-b">N/A</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 bg-[#E8F2E4]">
+                            <td class="py-3 px-4 border-b font-semibold">pCloud Premium Plus</td>
+                            <td class="py-3 px-4 border-b font-semibold">2 TB</td>
+                            <td class="py-3 px-4 border-b font-semibold">Lifetime</td>
+                            <td class="py-3 px-4 border-b font-semibold">$399 (one-time)</td>
+                            <td class="py-3 px-4 border-b font-semibold">$399</td>
+                            <td class="py-3 px-4 border-b font-semibold">$399</td>
+                            <td class="py-3 px-4 border-b font-semibold">$399</td>
+                            <td class="py-3 px-4 border-b font-semibold">~3.3-4 years</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 border-b">Icedrive Life 2K</td>
+                            <td class="py-3 px-4 border-b">2 TB</td>
+                            <td class="py-3 px-4 border-b">Lifetime</td>
+                            <td class="py-3 px-4 border-b">$479 (one-time)</td>
+                            <td class="py-3 px-4 border-b">$479</td>
+                            <td class="py-3 px-4 border-b">$479</td>
+                            <td class="py-3 px-4 border-b">$479</td>
+                            <td class="py-3 px-4 border-b">~4-5 years</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 bg-[#E8F2E4]">
+                            <td class="py-3 px-4 border-b font-semibold">Koofr</td>
+                            <td class="py-3 px-4 border-b font-semibold">1 TB</td>
+                            <td class="py-3 px-4 border-b font-semibold">Lifetime</td>
+                            <td class="py-3 px-4 border-b font-semibold">$159.99 (one-time)</td>
+                            <td class="py-3 px-4 border-b font-semibold">$159.99</td>
+                            <td class="py-3 px-4 border-b font-semibold">$159.99</td>
+                            <td class="py-3 px-4 border-b font-semibold">$159.99</td>
+                            <td class="py-3 px-4 border-b font-semibold">~1.3-1.6 years</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 border-b">Internxt</td>
+                            <td class="py-3 px-4 border-b">1 TB</td>
+                            <td class="py-3 px-4 border-b">Lifetime</td>
+                            <td class="py-3 px-4 border-b">$129.99 (one-time)</td>
+                            <td class="py-3 px-4 border-b">$129.99</td>
+                            <td class="py-3 px-4 border-b">$129.99</td>
+                            <td class="py-3 px-4 border-b">$129.99</td>
+                            <td class="py-3 px-4 border-b">~1.1-1.3 years</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="text-center text-sm text-gray-500 mt-4">Break-even points are approximate, comparing lifetime cost to cumulative cost of mainstream subscriptions. Lifetime deals offer significant savings over the long run.</p>
+            </div>
+
+            <div class="kpi-card border-t-4 border-[#75C8E4]">
+                <h3 class="text-2xl font-bold mb-2 text-center">Key Trade-offs of Lifetime Deals</h3>
+                <ul class="list-disc list-inside space-y-2 text-gray-700">
+                    <li><strong class="font-semibold">Company Longevity Risk:</strong> The "lifetime" is only as long as the provider remains operational. Smaller/newer companies carry higher risk.</li>
+                    <li><strong class="font-semibold">Feature Stagnation:</strong> May lack continuous updates, new features, and timely bug fixes compared to subscription services.</li>
+                    <li><strong class="font-semibold">Scalability:</strong> Fixed storage amounts; growing needs may require additional purchases, diminishing initial value.</li>
+                    <li><strong class="font-semibold">Technology Evolution:</strong> Locked into a specific tech stack; may not adapt to future AI or security advancements.</li>
+                </ul>
+                <p class="text-center text-sm text-gray-500 mt-4">The financial benefit of lifetime plans must be weighed against these inherent risks to ensure long-term data integrity and usability.</p>
+            </div>
+        </section>
+
+        <section id="decision" class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8">Make Your Choice: A Path to Your Perfect Plan</h2>
+             <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">Follow this flowchart to find the recommendation that best fits your needs, based on your primary priorities for cloud storage.</p>
+            <div class="w-full">
+                <div class="flowchart-node max-w-sm mx-auto">
+                    <p class="font-bold text-lg">What is your #1 priority?</p>
+                </div>
+                <div class="flowchart-connector h-8"></div>
+                
+                <div class="flex justify-center items-center">
+                    <div class="flowchart-connector-horizontal hidden md:block"></div>
+                    <div class="w-px md:h-16 bg-[#75C8E4] md:w-full md:h-px"></div>
+                    <div class="flowchart-connector-horizontal hidden md:block"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                         <div class="flowchart-connector h-8 md:hidden"></div>
+                        <div class="flowchart-node"><p>🤖<br/>Effortless AI Organization & Finding</p></div>
+                        <div class="flowchart-connector h-8"></div>
+                        <div class="flowchart-node bg-[#E8F2E4]"><strong class="text-lg">Google One</strong><p class="text-sm">(with Google Photos)</p></div>
+                    </div>
+                     <div class="text-center">
+                          <div class="flowchart-connector h-8 md:hidden"></div>
+                        <div class="flowchart-node"><p>💰<br/>Best Long-Term Value (One-Time Pay)</p></div>
+                        <div class="flowchart-connector h-8"></div>
+                        <div class="flowchart-node bg-[#E8F2E4]"><strong class="text-lg">pCloud</strong><p class="text-sm">(Balanced & Reliable)</p></div>
+                    </div>
+                     <div class="text-center">
+                          <div class="flowchart-connector h-8 md:hidden"></div>
+                        <div class="flowchart-node"><p>🔒<br/>Absolute Privacy & Top-Tier Security</p></div>
+                        <div class="flowchart-connector h-8"></div>
+                        <div class="flowchart-node bg-[#E8F2E4]"><strong class="text-lg">Internxt</strong><p class="text-sm">(Privacy First)</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center border-t pt-8 mt-8 border-gray-300">
+            <p class="text-gray-600">Data synthesized from the "Comprehensive Analysis of Cloud Storage Solutions" report.</p>
+            <p class="text-sm text-gray-500 mt-1">This infographic is for informational purposes only. Prices and features are subject to change. Always verify with the provider.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const brilliantBlues = {
+            primary: '#00A1E4',
+            secondary: '#00B5E2',
+            tertiary: '#75C8E4',
+            light: '#B2DDE4',
+            background: '#E8F2E4'
+        };
+
+        const tooltipCallback = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                                return label.join(' ');
+                            } else {
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        function wrapLabel(str, maxWidth) {
+            if (str.length <= maxWidth) {
+                return str;
+            }
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).trim().length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            });
+            if (currentLine.length > 0) {
+                lines.push(currentLine);
+            }
+            return lines;
+        }
+
+        const subscriptionCtx = document.getElementById('subscriptionCostChart').getContext('2d');
+        new Chart(subscriptionCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Google One (2TB)', wrapLabel('Microsoft 365 Personal (1TB)', 16), 'Dropbox Plus (2TB)'],
+                datasets: [{
+                    label: 'Annual Cost ($)',
+                    data: [119.88, 99.99, 119.88],
+                    backgroundColor: [brilliantBlues.primary, brilliantBlues.secondary, brilliantBlues.tertiary],
+                    borderColor: '#ffffff',
+                    borderWidth: 2,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                ...tooltipCallback,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#e5e7eb'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    ...tooltipCallback.plugins,
+                    title: {
+                        display: false
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 10,
+                            padding: 15
+                        }
+                    }
+                }
+            }
+        });
+
+        const lifetimeCtx = document.getElementById('lifetimeCostChart').getContext('2d');
+        new Chart(lifetimeCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Internxt (1TB)', 'Koofr (1TB)', 'pCloud (2TB)', 'Icedrive (2TB)'],
+                datasets: [{
+                    label: 'One-Time Cost ($)',
+                    data: [129.99, 159.99, 399.00, 479.00],
+                    backgroundColor: [brilliantBlues.primary, brilliantBlues.secondary, brilliantBlues.tertiary, brilliantBlues.light],
+                     borderColor: '#ffffff',
+                    borderWidth: 2,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                ...tooltipCallback,
+                indexAxis: 'y',
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#e5e7eb'
+                        }
+                    },
+                    y: {
+                         grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                     ...tooltipCallback.plugins,
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+        
+        const radarCtx = document.getElementById('tradeoffRadarChart').getContext('2d');
+        new Chart(radarCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Cost-Effectiveness', 'Features', 'Reliability (User Rated)', 'Privacy'],
+                datasets: [
+                    {
+                        label: 'pCloud',
+                        data: [4, 3, 4, 4], 
+                        fill: true,
+                        backgroundColor: 'rgba(0, 161, 228, 0.2)',
+                        borderColor: brilliantBlues.primary,
+                        pointBackgroundColor: brilliantBlues.primary,
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: brilliantBlues.primary
+                    },
+                    {
+                        label: 'Internxt',
+                        data: [5, 2, 2, 5],
+                        fill: true,
+                        backgroundColor: 'rgba(117, 200, 228, 0.2)',
+                        borderColor: brilliantBlues.tertiary,
+                        pointBackgroundColor: brilliantBlues.tertiary,
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: brilliantBlues.tertiary
+                    },
+                    {
+                        label: 'Icedrive',
+                        data: [3, 4, 1, 4],
+                        fill: true,
+                        backgroundColor: 'rgba(178, 221, 228, 0.2)',
+                        borderColor: brilliantBlues.light,
+                        pointBackgroundColor: brilliantBlues.light,
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: brilliantBlues.light
+                    }
+                ]
+            },
+            options: {
+                 ...tooltipCallback,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: {
+                            color: '#d1d5db'
+                        },
+                        grid: {
+                            color: '#e5e7eb'
+                        },
+                        pointLabels: {
+                            font: {
+                                size: 12,
+                                weight: 'bold'
+                            }
+                        },
+                        ticks: {
+                            backdropColor: 'transparent',
+                            stepSize: 1,
+                            max: 5,
+                            min: 0
+                        }
+                    }
+                },
+                plugins: {
+                     ...tooltipCallback.plugins,
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 10,
+                            padding: 15
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
