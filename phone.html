@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Phone & Number Transition Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutral (Beige, Slate, Soft Teal) -->
+    <!-- Application Structure Plan: A task-oriented SPA with a top navigation bar to switch between three main content sections: 1) A 'Dashboard' for an overview and urgent actions, 2) 'Find Your Phone' for device acquisition, and 3) 'Update Your Number' for the administrative process. This structure is chosen to break down the user's complex problem into two clear, manageable, and actionable workflows, rather than a linear report format. The 'Find Your Phone' section uses interactive charts for data comparison, while the 'Update Your Number' section features a collapsible checklist, turning the report's static information into a practical, user-driven tool. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Total Cost of Ownership (TCO) data -> Goal: Compare -> Viz: Bar Chart (Chart.js) -> Interaction: Hover tooltips show cost breakdown. Justification: Visually demonstrates the financial advantage of one-time purchase over subscriptions more effectively than a table.
+        - Report Info: Phone prices in NL/IN/US -> Goal: Compare -> Viz: Grouped Bar Chart (Chart.js) -> Interaction: Hover tooltips show exact prices. Justification: Allows for quick, multi-regional price comparison for recommended models.
+        - Report Info: Phone recommendations -> Goal: Inform -> Viz: HTML/CSS Cards -> Interaction: N/A. Justification: Provides a clean, scannable format for key device specifications.
+        - Report Info: Number update procedures -> Goal: Organize/Action -> Viz: HTML/CSS collapsible checklist -> Interaction: Click to expand/collapse sections, check items. Justification: Transforms the report's list into an interactive, stateful tool that users can follow to track their progress.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .nav-link { transition: color 0.3s, border-bottom-color 0.3s; }
+        .nav-link.active { border-bottom-color: #14B8A6; color: #14B8A6; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .chart-container { position: relative; width: 100%; max-width: 700px; margin-left: auto; margin-right: auto; height: 350px; max-height: 40vh; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+        .checklist-item h3 { cursor: pointer; }
+        .checklist-item-content { display: none; }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-800">
+
+    <div id="app" class="container mx-auto p-4 md:p-8 max-w-7xl">
+        <header class="bg-white rounded-xl shadow-sm p-4 mb-8 sticky top-4 z-10">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <h1 class="text-2xl md:text-3xl font-bold text-slate-700 mb-4 md:mb-0">Your Transition Guide</h1>
+                <nav id="main-nav" class="flex space-x-4 md:space-x-6 border-b md:border-b-0 pb-2 md:pb-0">
+                    <a href="#dashboard" class="nav-link text-slate-600 hover:text-teal-600 border-b-2 border-transparent pb-1">Dashboard</a>
+                    <a href="#phone" class="nav-link text-slate-600 hover:text-teal-600 border-b-2 border-transparent pb-1">📱 Find Your Phone</a>
+                    <a href="#update" class="nav-link text-slate-600 hover:text-teal-600 border-b-2 border-transparent pb-1">🔄 Update Your Number</a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section space-y-8">
+                <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <h2 class="text-2xl font-bold mb-4 text-teal-700">Navigating Your Next Step</h2>
+                    <p class="text-slate-600 leading-relaxed">Welcome! You're facing two big tasks with a one-week deadline: getting a new personal phone and updating your number across countless services in the Netherlands and India. This is a big job, but entirely manageable. This interactive guide is designed to streamline the process, turning a complex report into simple, actionable steps. We'll help you find the best phone for your budget and then walk you through every number change you need to make. Let's get started.</p>
+                </div>
+                <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-800 p-6 rounded-r-lg shadow-sm">
+                    <h3 class="text-xl font-bold mb-2">⚠️ Critical First Steps</h3>
+                    <p class="mb-4">Your old phone number is the key to updating most of your accounts via One-Time Passcodes (OTPs). Before you return your old SIM, you MUST prioritize a few updates. </p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Keep Your Old SIM Active:</strong> If possible, negotiate a few extra days to keep your old business SIM. If your new phone has dual-SIM, use it! This is the single most important thing you can do.</li>
+                        <li><strong>Update DigiD Immediately:</strong> This is your key to Dutch government services. Update it using your old number <span class="font-bold">before</span> you lose access to it.</li>
+                        <li><strong>Update Key Bank Accounts:</strong> Log into your primary Dutch and Indian bank apps and update your number now, while you can still receive their verification texts.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Phone Finder Section -->
+            <section id="phone" class="content-section space-y-8">
+                 <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <h2 class="text-2xl font-bold mb-4 text-teal-700">Part 1: Strategic Phone Acquisition</h2>
+                    <p class="text-slate-600 leading-relaxed">The first step is securing a new personal phone that will last you for the next five years, all within your €250 budget. This section compares your buying options, recommends specific models available in the Netherlands that offer the best value, and helps you understand why a one-time purchase is likely your most cost-effective choice.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <h3 class="text-xl font-bold mb-4">Subscription vs. One-Time Purchase</h3>
+                    <p class="text-slate-600 mb-6">"Free" phone deals with cheap monthly plans can seem tempting, but they often have a higher total cost over two years. A one-time purchase combined with a flexible, cheap SIM-only plan is usually more economical and gives you more freedom. The chart below illustrates the approximate total cost over 24 months.</p>
+                    <div class="chart-container">
+                        <canvas id="tcoChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <h3 class="text-xl font-bold mb-4">Top Phone Picks (Under €250 in NL)</h3>
+                    <p class="text-slate-600 mb-6">Here are three excellent phones that fit your budget and 5-year longevity goal. They offer a great balance of performance, battery life, and software support.</p>
+                    <div id="phone-recommendations" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Phone cards will be injected here by JS -->
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <h3 class="text-xl font-bold mb-4">Price Comparison: NL vs. India vs. US</h3>
+                    <p class="text-slate-600 mb-6">While you might think phones are cheaper in India or the US, the Dutch market is very competitive for budget Androids. As you can see below, prices are often comparable or even better in the Netherlands, saving you the hassle of international purchasing.</p>
+                     <div class="chart-container">
+                        <canvas id="priceComparisonChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <h3 class="text-xl font-bold mb-4">Recommended SIM-Only Plans</h3>
+                    <p class="text-slate-600 mb-6">Pair your new phone with one of these value-packed SIM-only plans for a low monthly cost and great network coverage.</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-100">
+                                <tr>
+                                    <th class="p-3 font-semibold">Provider</th>
+                                    <th class="p-3 font-semibold">Plan Details</th>
+                                    <th class="p-3 font-semibold">Approx. Monthly Cost</th>
+                                    <th class="p-3 font-semibold">Network</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- SIM plans will be injected here by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Number Update Section -->
+            <section id="update" class="content-section space-y-8">
+                 <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <h2 class="text-2xl font-bold mb-4 text-teal-700">Part 2: Comprehensive Number Update Plan</h2>
+                    <p class="text-slate-600 leading-relaxed">With your new phone and number ready, it's time to tackle the administrative task of updating your contact information. This section provides a comprehensive, interactive checklist. Click on any item to see detailed instructions for that specific service. Check them off as you go to track your progress.</p>
+                </div>
+                 <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <h3 class="text-xl font-bold mb-4">Your Actionable Checklist</h3>
+                    <div id="checklist-container" class="space-y-4">
+                        <!-- Checklist will be injected here by JS -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            const phoneData = [
+                {
+                    name: "OnePlus Nord CE 4 Lite 5G",
+                    price: "€189 - €225",
+                    specs: [
+                        "6.7\" 120Hz AMOLED Display",
+                        "256GB Storage, 8GB RAM",
+                        "5500mAh Battery, 80W Fast Charging",
+                        "50MP Camera",
+                        "2 Major Android + 3 Yrs Security Updates"
+                    ],
+                    retailers: "Coolblue, MediaMarkt"
+                },
+                {
+                    name: "Motorola Moto G56 5G",
+                    price: "€219 - €249",
+                    specs: [
+                        "6.72\" 120Hz Display",
+                        "256GB Storage, 8GB RAM",
+                        "5200mAh Battery",
+                        "50MP Camera",
+                        "Near-Stock Android Experience"
+                    ],
+                    retailers: "Coolblue, MediaMarkt"
+                },
+                {
+                    name: "Xiaomi Redmi Note 14 Pro 5G",
+                    price: "€259 - €289",
+                    specs: [
+                        "6.67\" AMOLED 120Hz Display",
+                        "256GB Storage, 8GB RAM",
+                        "5110mAh Battery",
+                        "200MP Camera",
+                        "Runs on HyperOS (Android 14)"
+                    ],
+                    retailers: "Techpunt, Galaxus, MediaMarkt"
+                },
+            ];
+
+            const simPlans = [
+                { provider: 'Budget Mobiel', details: '15GB 5G, 200 mins/SMS', cost: '€10.40 - €14.40', network: 'KPN' },
+                { provider: 'Odido', details: '10GB, 120 mins/SMS', cost: '€15.50', network: 'Odido' },
+                { provider: 'Vodafone Prepaid', details: '6GB Bundle', cost: '€19.00', network: 'Vodafone' },
+                { provider: 'Simyo / Lebara', details: 'Various flexible plans', cost: 'Varies', network: 'KPN / Odido' }
+            ];
+            
+            const checklistData = {
+                "Netherlands 🇳🇱": {
+                    "Banks": [
+                        { item: "Your Dutch Bank(s)", details: "Use the online banking portal or mobile app. Look for 'Profile' or 'Settings' to update your number. Requires OTP to your old number or security questions." },
+                        { item: "Revolut (Personal)", details: "Update in the mobile app via Profile > Account > Personal details. Requires OTP to old number or selfie/ID verification if access is lost." }
+                    ],
+                    "Government Portals (High Priority!)": [
+                        { item: "DigiD", details: "CRITICAL: Update BEFORE losing old SIM access. Use the DigiD App (PIN & QR code) or the Mijn DigiD website (requires SMS verification to old number). Failure may require a lengthy re-application." },
+                        { item: "Non-residents Records Database (RNI)", details: "Requires a scheduled, in-person appointment at an RNI desk in one of 19 municipalities. You must bring a valid passport or ID card. Book this appointment immediately." }
+                    ],
+                    "Investment Platforms": [
+                         { item: "Trade Republic", details: "CRITICAL: Log in with your OLD number first, then change it in Settings. Logging in with your new number first will create a new, empty account and complicate the process." },
+                         { item: "Revolut (Investment)", details: "Update process is integrated within the main Revolut app settings, same as your personal details." },
+                    ],
+                    "Other Communications": [
+                         { item: "Schools / Studielink", details: "Check the school's parent portal or Studielink for 'Change telephone number' or 'Update household information' options." },
+                         { item: "Employer (HR Dept.)", details: "Contact your HR department directly or use the company's internal HR portal to update your contact information." }
+                    ]
+                },
+                "India 🇮�": {
+                     "Banks": [
+                        { item: "Your Indian Bank(s)", details: "Multiple options available: 1) Online Banking/App (requires OTP to old number), 2) Bank ATM (using your debit card and PIN), or 3) In-person branch visit (requires form, ID proof like Aadhaar/PAN, and photo)." }
+                     ],
+                     "Government & Investments": [
+                        { item: "Aadhaar-Linked Number", details: "Ensuring your new number is linked to your Aadhaar is crucial as it's used for OTPs across most Indian government and financial services. This may require a visit to an Aadhaar enrolment center if not done online." },
+                        { item: "Demat Account(s)", details: "Update online via your broker's website/app or the NSDL/CDSL portals using OTP verification. Offline option involves visiting your Depository Participant (DP) office with a form and ID proof (PAN card)." },
+                        { item: "Other Platforms (e.g., HDFC Sec, Share India)", details: "Log in to the respective platform's website or app and find 'Account Settings' or 'Edit Personal/KYC Details' to update your number." }
+                     ],
+                      "Other Communications": [
+                         { item: "Schools / Employer", details: "Contact the administrative office or HR department directly to inform them of your new number." }
+                    ]
+                }
+            };
+            
+            function renderPhoneRecs() {
+                const container = document.getElementById('phone-recommendations');
+                let html = '';
+                phoneData.forEach(phone => {
+                    html += `
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-6 flex flex-col">
+                            <h4 class="text-lg font-bold text-slate-800">${phone.name}</h4>
+                            <p class="text-teal-600 font-semibold mb-3">${phone.price}</p>
+                            <ul class="space-y-2 text-slate-600 list-disc list-inside mb-4 flex-grow">
+                                ${phone.specs.map(spec => `<li>${spec}</li>`).join('')}
+                            </ul>
+                            <p class="text-sm text-slate-500 mt-auto">Find at: ${phone.retailers}</p>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            }
+
+            function renderSimPlans() {
+                 const tbody = document.querySelector('#phone table tbody');
+                 let html = '';
+                 simPlans.forEach((plan, index) => {
+                     html += `
+                        <tr class="border-b border-slate-200 ${index % 2 === 0 ? 'bg-white' : 'bg-slate-50'}">
+                            <td class="p-3 font-medium">${plan.provider}</td>
+                            <td class="p-3 text-slate-600">${plan.details}</td>
+                            <td class="p-3 text-slate-600">${plan.cost}</td>
+                            <td class="p-3 text-slate-600">${plan.network}</td>
+                        </tr>
+                     `;
+                 });
+                 tbody.innerHTML = html;
+            }
+
+            function renderChecklist() {
+                const container = document.getElementById('checklist-container');
+                let html = '';
+                for(const region in checklistData) {
+                    html += `<div class="bg-slate-100 rounded-lg p-1">
+                                <h2 class="text-xl font-bold p-4">${region}</h2>`;
+                    for(const category in checklistData[region]) {
+                        html += `<div class="bg-white rounded-md mb-2 shadow-sm">
+                                    <h3 class="text-lg font-semibold p-4 border-b border-slate-200 flex justify-between items-center checklist-item-title">
+                                        <span>${category}</span>
+                                        <span class="text-teal-500 transform transition-transform">▼</span>
+                                    </h3>
+                                    <div class="p-4 space-y-3 checklist-item-content">`;
+                        checklistData[region][category].forEach(item => {
+                            html += `<div class="flex items-start">
+                                        <input type="checkbox" class="mt-1.5 mr-3 h-5 w-5 rounded border-gray-300 text-teal-600 focus:ring-teal-500">
+                                        <div>
+                                            <p class="font-semibold">${item.item}</p>
+                                            <p class="text-slate-600 text-sm">${item.details}</p>
+                                        </div>
+                                     </div>`;
+                        });
+                        html += `</div></div>`;
+                    }
+                    html += `</div>`;
+                }
+                container.innerHTML = html;
+            }
+            
+            function setupNavigation() {
+                const navigate = () => {
+                    const hash = window.location.hash || '#dashboard';
+                    navLinks.forEach(link => {
+                        link.classList.toggle('active', link.getAttribute('href') === hash);
+                    });
+                    contentSections.forEach(section => {
+                        section.classList.toggle('active', `#${section.id}` === hash);
+                    });
+                };
+
+                navLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        window.location.hash = e.target.getAttribute('href');
+                    });
+                });
+                
+                window.addEventListener('hashchange', navigate);
+                navigate(); // Initial load
+            }
+
+            function setupChecklistInteraction() {
+                const checklistContainer = document.getElementById('checklist-container');
+                checklistContainer.addEventListener('click', (e) => {
+                    const title = e.target.closest('.checklist-item-title');
+                    if (title) {
+                        const content = title.nextElementSibling;
+                        const arrow = title.querySelector('span:last-child');
+                        if (content.style.display === 'block') {
+                            content.style.display = 'none';
+                            arrow.style.transform = 'rotate(0deg)';
+                        } else {
+                            content.style.display = 'block';
+                            arrow.style.transform = 'rotate(180deg)';
+                        }
+                    }
+                });
+            }
+
+            function createTcoChart() {
+                const ctx = document.getElementById('tcoChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['One-Time Purchase + SIM', 'Subscription with "Free" Phone'],
+                        datasets: [{
+                            label: 'Min. Cost (€)',
+                            data: [429, 480],
+                            backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Max. Cost (€)',
+                            data: [711, 840],
+                            backgroundColor: 'rgba(239, 68, 68, 0.6)',
+                            borderColor: 'rgba(239, 68, 68, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true, title: { display: true, text: 'Total Cost over 24 Months (€)' } }
+                        },
+                        plugins: {
+                            title: { display: true, text: '24-Month Total Cost of Ownership Comparison', font: { size: 16 } },
+                            tooltip: { mode: 'index', intersect: false }
+                        }
+                    }
+                });
+            }
+
+            function createPriceComparisonChart() {
+                const ctx = document.getElementById('priceComparisonChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Motorola Moto G56', 'OnePlus Nord CE 4 Lite', 'Xiaomi Redmi Note 14 Pro'],
+                        datasets: [
+                            {
+                                label: 'Netherlands (€)',
+                                data: [234, 207, 279],
+                                backgroundColor: 'rgba(20, 184, 166, 0.7)', 
+                                borderColor: 'rgba(20, 184, 166, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'India (approx. €)',
+                                data: [175, 213, 250],
+                                backgroundColor: 'rgba(249, 115, 22, 0.7)',
+                                borderColor: 'rgba(249, 115, 22, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'USA (approx. €)',
+                                data: [260, 250, 257],
+                                backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                     options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true, title: { display: true, text: 'Approximate Price (€)' } },
+                            x: {
+                                ticks: {
+                                    callback: function(value, index, values) {
+                                        const label = this.getLabelForValue(value);
+                                        return label.length > 20 ? label.split(' ').slice(0, 3).join(' ') + '...' : label;
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            title: { display: true, text: 'Budget Phone Price Comparison by Country', font: { size: 16 }},
+                            tooltip: { mode: 'index', intersect: false }
+                        }
+                    }
+                });
+            }
+
+            renderPhoneRecs();
+            renderSimPlans();
+            renderChecklist();
+            setupNavigation();
+            setupChecklistInteraction();
+            createTcoChart();
+            createPriceComparisonChart();
+        });
+    </script>
+</body>
+</html>
+�
