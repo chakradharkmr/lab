@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { url: 'storage.html', title: 'Cloud Storage Solutions' },
         { url: 'phone.html',  title: 'Phone Swap' },
         { url: 'NL-CH-IT.html',  title: 'Swiss & Milan Trip' },
-        { url: 'adhd-ds.html', title: 'ADHD Therapy' },
-        //{ url: 'https://myspecialproject.com/demo', title: 'My Awesome Project Demo' }, // Custom title
+        { url: 'adhd-ds.html', title: 'ADHD Basics' },
+        { url: 'adhd-ds.html', title: 'ADHD Therapy Plan' },
         //'simple-faq.html'
     ];
 
