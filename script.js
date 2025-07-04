@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'summer.html',
         'https://kaveri.net.in/info2.html', // External URL example
         'info.html',
-        'blog-post.html',
+        'storage.html',
         'https://kaveri.net.in/summer2.html', // Another external URL
         'dashboard.html',
         'about-us.html',
