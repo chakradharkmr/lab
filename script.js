@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { url: 'NL-CH-IT.html',  title: 'Swiss & Milan Trip' },
         { url: 'adhd-ds.html', title: 'ADHD Basics' },
         { url: 'adhd.html', title: 'ADHD Therapy Plan' },
-        //'simple-faq.html'
+        { url: 'krish.html', title: 'Krish Checklist' },
     ];
 
     // Helper function to capitalize the first letter of each word
