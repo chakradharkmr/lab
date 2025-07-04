@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5-Day Family Tesla Adventure: NL to CH & IT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Serene Journey (Off-white/beige background, dark slate text, muted teal for primary elements, soft sand for accents) -->
+    <!-- Application Structure Plan: A single-page dashboard design with top navigation ("Overview", "Itinerary", "Budget", "Activities", "Logistics") for non-linear exploration. This structure is chosen over the report's linear format to allow users to quickly access specific information (like budget or packing) without scrolling through the entire narrative. Key interactions include a clickable itinerary timeline, a dynamic budget chart with toggles, and filterable activity cards to cater to different user needs and make data exploration more engaging and efficient. -->
+    <!-- Visualization & Content Choices:
+    - Budget: Report Info: Detailed budget table. Goal: Compare cost categories. Viz: Interactive Donut Chart (Chart.js) with a toggle for optional costs. Justification: A donut chart provides an intuitive at-a-glance comparison of spending proportions, which is more impactful than a static table. The interaction makes exploring budget scenarios possible.
+    - Itinerary: Report Info: Day-by-day text description. Goal: Organize a 5-day schedule. Presentation: Clickable vertical timeline/stepper (HTML/CSS/JS). Justification: Deconstructs the long text into manageable, interactive chunks, reducing cognitive load and improving scannability.
+    - Driving Rules/Logistics: Report Info: Text paragraphs on tolls, charging, packing. Goal: Inform on critical prep. Presentation: Accordion/Tabbed interface (HTML/CSS/JS). Justification: Organizes dense, related information into clean, collapsible sections, preventing the page from becoming overwhelmingly long.
+    - Activities: Report Info: Lists of activities. Goal: Compare options. Presentation: Filterable cards (HTML/CSS/JS). Justification: Allows users to instantly find activities relevant to their interests (cost, location), making planning easier than reading through static lists.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F5F2; /* Warm Neutral Background */
+            color: #3D405B; /* Dark Slate Text */
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #3A868C; /* Muted Teal */
+            border-bottom-color: #3A868C;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 2px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #E07A5F; /* Accent Color */
+            border: 3px solid #F8F5F2;
+        }
+        .timeline-path::before {
+            content: '';
+            position: absolute;
+            left: -21px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #8D99AE;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header & Navigation -->
+    <header id="header" class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl md:text-2xl font-bold text-[#3A868C]">Family Road Trip Planner</h1>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#overview" class="nav-link py-2 text-sm font-medium">Overview</a>
+                    <a href="#itinerary" class="nav-link py-2 text-sm font-medium">Itinerary</a>
+                    <a href="#budget" class="nav-link py-2 text-sm font-medium">Budget</a>
+                    <a href="#activities" class="nav-link py-2 text-sm font-medium">Activities</a>
+                    <a href="#logistics" class="nav-link py-2 text-sm font-medium">Logistics</a>
+                </nav>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="p-2 rounded-md">
+                         <span class="block w-6 h-0.5 bg-[#3D405B]"></span>
+                         <span class="block w-6 h-0.5 bg-[#3D405B] mt-1"></span>
+                         <span class="block w-6 h-0.5 bg-[#3D405B] mt-1"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#overview" class="block py-2 px-4 text-sm hover:bg-gray-100">Overview</a>
+            <a href="#itinerary" class="block py-2 px-4 text-sm hover:bg-gray-100">Itinerary</a>
+            <a href="#budget" class="block py-2 px-4 text-sm hover:bg-gray-100">Budget</a>
+            <a href="#activities" class="block py-2 px-4 text-sm hover:bg-gray-100">Activities</a>
+            <a href="#logistics" class="block py-2 px-4 text-sm hover:bg-gray-100">Logistics</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <!-- Section 1: Overview -->
+        <section id="overview" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#3A868C]">Your Tesla Adventure Awaits</h2>
+            <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+                This interactive planner outlines a 5-day family road trip from the Netherlands to Switzerland and Milan. It's designed to balance driving, exploration, and relaxation, all while keeping a close eye on the budget. Explore the sections below to see the full plan.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center mb-12">
+                <div class="bg-white p-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform">
+                    <p class="text-4xl font-bold text-[#E07A5F]">5</p>
+                    <p class="text-gray-500 font-medium">Days</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform">
+                    <p class="text-4xl font-bold text-[#E07A5F]">3</p>
+                    <p class="text-gray-500 font-medium">Countries</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform">
+                    <p class="text-4xl font-bold text-[#E07A5F]">~2200</p>
+                    <p class="text-gray-500 font-medium">Kilometers</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform">
+                    <p class="text-4xl font-bold text-[#E07A5F]">€900</p>
+                    <p class="text-gray-500 font-medium">Est. Budget</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Interactive Itinerary -->
+        <section id="itinerary" class="mb-16 scroll-mt-16">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#3A868C]">The Road Ahead</h2>
+            <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-12">
+                This is a day-by-day breakdown of your journey. Click on any day to expand and see the details, including driving times, key stops, and overnight locations. The plan is ambitious but structured for a single driver with two young children.
+            </p>
+            <div class="relative pl-8 md:pl-12">
+                <div class="timeline-path"></div>
+                <!-- Day 1 -->
+                <div class="timeline-item mb-8">
+                    <h3 class="text-xl font-semibold mb-1">Day 1: Journey to Germany</h3>
+                    <p class="text-sm text-gray-500 mb-2">~6-7 hours driving | 650 km</p>
+                    <p>Drive from the Netherlands, breaking the journey with a strategic overnight stop in Freiburg, Germany. This makes the long first leg manageable and safe.</p>
+                </div>
+                <!-- Day 2 -->
+                <div class="timeline-item mb-8">
+                    <h3 class="text-xl font-semibold mb-1">Day 2: Into the Swiss Alps</h3>
+                    <p class="text-sm text-gray-500 mb-2">~3-4 hours driving | 250 km</p>
+                    <p>A shorter drive brings you to the heart of Switzerland. We recommend the Lucerne area for its blend of stunning scenery and family-friendly, walkable attractions.</p>
+                </div>
+                <!-- Day 3 -->
+                <div class="timeline-item mb-8">
+                    <h3 class="text-xl font-semibold mb-1">Day 3: Swiss Wonders & Italian Bound</h3>
+                    <p class="text-sm text-gray-500 mb-2">~3-4 hours driving | 300 km</p>
+                    <p>After a morning in Lucerne, drive towards Milan. A scenic drive-by of Lake Como is a must-do before arriving in the city for your son's requested destination.</p>
+                </div>
+                <!-- Day 4 -->
+                <div class="timeline-item mb-8">
+                    <h3 class="text-xl font-semibold mb-1">Day 4: Milanese Magic for All Ages</h3>
+                    <p class="text-sm text-gray-500 mb-2">Minimal driving</p>
+                    <p>A full day to explore Milan. The plan includes iconic free sights like the Duomo piazza, fun activities for the kids like the Science Museum, and time for play in a city park.</p>
+                </div>
+                <!-- Day 5 -->
+                <div class="timeline-item">
+                    <h3 class="text-xl font-semibold mb-1">Day 5: The Homeward Stretch</h3>
+                    <p class="text-sm text-gray-500 mb-2">~10-12 hours driving | 1075 km</p>
+                    <p>The most demanding driving day. An early start, frequent breaks, and plenty of in-car entertainment are key to a smooth journey back to the Netherlands.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Budget Explorer -->
+        <section id="budget" class="mb-16 scroll-mt-16">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#3A868C]">Budget Explorer</h2>
+            <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-12">
+                This trip is designed to be budget-friendly, relying on self-catering and strategic choices. The chart below visualizes the estimated cost breakdown. Use the toggle to see how optional extras, like the San Siro stadium tour, impact the total.
+            </p>
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="w-full md:w-1/2">
+                        <div class="chart-container">
+                            <canvas id="budgetChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2">
+                        <h3 class="text-2xl font-bold mb-4">Cost Breakdown</h3>
+                        <div class="space-y-3 mb-6" id="budget-details">
+                        </div>
+                        <div class="flex items-center justify-between bg-[#F8F5F2] p-4 rounded-lg">
+                            <label for="sanSiroToggle" class="font-medium">Include optional San Siro Tour? (+€107)</label>
+                            <div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+                                <input type="checkbox" name="toggle" id="sanSiroToggle" class="toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                                <label for="sanSiroToggle" class="toggle-label block overflow-hidden h-7 rounded-full bg-gray-300 cursor-pointer"></label>
+                            </div>
+                        </div>
+                        <div class="mt-6 text-center md:text-left">
+                             <p class="text-gray-600">Total Estimated Cost:</p>
+                             <p id="totalCost" class="text-4xl font-bold text-[#E07A5F]"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Activity Finder -->
+        <section id="activities" class="mb-16 scroll-mt-16">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#3A868C]">Activity Finder</h2>
+             <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-12">
+                Finding things to do that please everyone is key to a great family trip. This section highlights recommended activities in Switzerland and Milan. Use the filters to find the perfect options for your family's interests and budget.
+            </p>
+            <div class="flex flex-wrap justify-center gap-2 mb-8">
+                <button class="activity-filter-btn active" data-filter="all">All</button>
+                <button class="activity-filter-btn" data-filter="switzerland">Switzerland</button>
+                <button class="activity-filter-btn" data-filter="milan">Milan</button>
+                <button class="activity-filter-btn" data-filter="free">Free</button>
+                <button class="activity-filter-btn" data-filter="paid">Paid</button>
+            </div>
+            <div id="activity-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Activity cards will be injected here by JS -->
+            </div>
+        </section>
+
+        <!-- Section 5: Logistics & Prep -->
+        <section id="logistics" class="scroll-mt-16">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#3A868C]">Logistics & Preparation</h2>
+            <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-12">
+                A smooth trip is a well-prepared trip. Here you'll find essential information on driving regulations, EV charging, and a comprehensive packing list. Click each section to expand the details.
+            </p>
+            <div class="space-y-4 max-w-4xl mx-auto">
+                <!-- Accordion Item 1: Driving -->
+                <div class="accordion-item bg-white rounded-lg shadow-md">
+                    <button class="accordion-header w-full flex justify-between items-center text-left p-4 font-semibold text-lg">
+                        <span>Driving Rules: Tolls & Vignettes</span>
+                        <span class="accordion-icon transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content px-4 pb-4 text-gray-700">
+                        <ul class="list-disc list-inside space-y-2 mt-2">
+                           <li><b>Germany:</b> Motorways are generally toll-free for cars. No special sticker needed.</li>
+                           <li><b>Switzerland:</b> A mandatory annual vignette is required for motorway use. Cost is ~€45 (40 CHF). It's highly recommended to buy this at the border for efficiency. Driving without it risks a large fine.</li>
+                           <li><b>Italy:</b> Most motorways are tolled based on distance. You take a ticket on entry and pay at a booth on exit. Costs are roughly €0.07/km.</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Accordion Item 2: Charging -->
+                <div class="accordion-item bg-white rounded-lg shadow-md">
+                    <button class="accordion-header w-full flex justify-between items-center text-left p-4 font-semibold text-lg">
+                        <span>EV Charging Strategy</span>
+                        <span class="accordion-icon transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content px-4 pb-4 text-gray-700">
+                        <p class="mt-2">The Tesla Supercharger network is extensive. Plan charging stops to coincide with meals or play breaks. Avoid idle fees by moving the car once charged. Average Supercharger costs vary:</p>
+                        <ul class="list-disc list-inside space-y-2 mt-2">
+                            <li><b>Germany:</b> €0.25 - €0.58 / kWh</li>
+                            <li><b>Switzerland:</b> €0.25 - €0.35 / kWh</li>
+                            <li><b>Italy:</b> €0.30 - €0.80 / kWh</li>
+                        </ul>
+                         <p class="mt-2">Prioritize hotels with destination chargers to start each day with a full battery.</p>
+                    </div>
+                </div>
+                <!-- Accordion Item 3: Packing -->
+                <div class="accordion-item bg-white rounded-lg shadow-md">
+                    <button class="accordion-header w-full flex justify-between items-center text-left p-4 font-semibold text-lg">
+                        <span>Essential Packing List</span>
+                         <span class="accordion-icon transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content px-4 pb-4 text-gray-700">
+                       <p class="mt-2">Self-catering and traveling with kids requires some key items. Here's a checklist:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 mt-2">
+                            <div>
+                                <h4 class="font-semibold mt-2">Cooking & Food</h4>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li>Portable kettle & toaster</li>
+                                    <li>Cooler/cool box for perishables</li>
+                                    <li>Basic non-perishable food stock</li>
+                                    <li>Reusable water bottles & coffee cups</li>
+                                    <li>Basic cleaning supplies</li>
+                                </ul>
+                            </div>
+                            <div>
+                               <h4 class="font-semibold mt-2">For the Kids</h4>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li>In-car entertainment (tablets, books, games)</li>
+                                    <li>Comfort items (pillows, blankets, favorite toys)</li>
+                                    <li>Age-appropriate snacks</li>
+                                    <li>Well-stocked first-aid kit</li>
+                                    <li>Appropriate car seats</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white mt-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-gray-500">
+            <p>&copy; 2025 Family Road Trip Planner. An interactive guide for your next adventure.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Data
+            const budgetData = {
+                base: [
+                    { label: 'Accommodation (3 nights)', value: 260 }, // Avg of range
+                    { label: 'Tesla Charging', value: 210 },
+                    { label: 'Tolls & Vignettes', value: 65 },
+                    { label: 'Food (Self-Catering)', value: 225 },
+                    { label: 'Activities', value: 107 } // St Beatus + Milan Combo
+                ],
+                optional: { label: 'San Siro Tour', value: 107 }
+            };
+
+            const activitiesData = [
+                { id: 1, title: 'Chapel Bridge & Old Town', location: 'Switzerland', cost: 'Free', category: 'switzerland free', desc: 'Walk across the historic wooden bridge and explore the charming painted squares of Lucerne.' },
+                { id: 2, title: 'Lion Monument', location: 'Switzerland', cost: 'Free', category: 'switzerland free', desc: 'Visit the poignant and impressive stone carving commemorating fallen Swiss Guards.' },
+                { id: 3, title: 'Lake Lucerne Walk', location: 'Switzerland', cost: 'Free', category: 'switzerland free', desc: 'Enjoy stunning mountain vistas on a leisurely walk along the beautiful lake shores.' },
+                { id: 4, title: 'St. Beatus Caves', location: 'Switzerland', cost: '~€55', category: 'switzerland paid', desc: 'Explore a fascinating underground world of stalactites and waterfalls. Great for a 9-year-old.' },
+                { id: 5, title: 'Piazza del Duomo', location: 'Milan', cost: 'Free', category: 'milan free', desc: 'Admire the magnificent cathedral exterior, people-watch, and let the kids run in the open space.' },
+                { id: 6, title: 'Galleria & Lucky Bull', location: 'Milan', cost: 'Free', category: 'milan free', desc: 'Window shop in the stunning arcade and take a spin on the bull mosaic for good luck.' },
+                { id: 7, title: 'Parco Sempione', location: 'Milan', cost: 'Free', category: 'milan free', desc: 'A large city park perfect for picnics, playing, and relaxing near Sforza Castle.' },
+                { id: 8, title: 'Milan Science Museum', location: 'Milan', cost: '~€52 (Combo w/ Duomo)', category: 'milan paid', desc: 'Italy\'s largest science museum, highly interactive and fantastic for children.' },
+                { id: 9, title: 'San Siro Stadium Tour', location: 'Milan', cost: '~€107 (Family)', category: 'milan paid', desc: 'A must-do for football fans. An optional splurge activity.' },
+            ];
+
+            // Budget Chart
+            const ctx = document.getElementById('budgetChart').getContext('2d');
+            let budgetChart;
+
+            function formatCurrency(value) {
+                return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(value);
+            }
+            
+            function calculateTotal(data) {
+                return data.reduce((sum, item) => sum + item.value, 0);
+            }
+
+            function updateBudgetDisplay(data) {
+                const totalCostEl = document.getElementById('totalCost');
+                const budgetDetailsEl = document.getElementById('budget-details');
+
+                const total = calculateTotal(data);
+                totalCostEl.textContent = formatCurrency(total);
+                
+                budgetDetailsEl.innerHTML = data.map(item => `
+                    <div class="flex justify-between items-center">
+                        <span>${item.label}</span>
+                        <span class="font-bold">${formatCurrency(item.value)}</span>
+                    </div>
+                `).join('');
+            }
+
+            function createOrUpdateChart(data) {
+                updateBudgetDisplay(data);
+                
+                const chartData = {
+                    labels: data.map(item => item.label),
+                    datasets: [{
+                        data: data.map(item => item.value),
+                        backgroundColor: ['#81B29A', '#F2CC8F', '#E07A5F', '#3D405B', '#8E8D8A', '#3A868C'],
+                        borderColor: '#F8F5F2',
+                        borderWidth: 4,
+                        hoverOffset: 10
+                    }]
+                };
+
+                if (budgetChart) {
+                    budgetChart.data = chartData;
+                    budgetChart.update();
+                } else {
+                    budgetChart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: chartData,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '60%',
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        padding: 15,
+                                        boxWidth: 12,
+                                        font: {
+                                            size: 12
+                                        }
+                                    }
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            let label = context.label || '';
+                                            if (label) {
+                                                label += ': ';
+                                            }
+                                            if (context.parsed !== null) {
+                                                label += formatCurrency(context.parsed);
+                                            }
+                                            return label;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+            
+            const sanSiroToggle = document.getElementById('sanSiroToggle');
+            sanSiroToggle.addEventListener('change', (e) => {
+                let currentBudgetData = [...budgetData.base];
+                if (e.target.checked) {
+                    // Find 'Activities' and add optional cost, or add as new item
+                    let activityItem = currentBudgetData.find(i => i.label === 'Activities');
+                    if (activityItem) {
+                        activityItem.value += budgetData.optional.value;
+                    } else {
+                         currentBudgetData.push(budgetData.optional);
+                    }
+                }
+                createOrUpdateChart(currentBudgetData);
+            });
+            
+            createOrUpdateChart(budgetData.base);
+
+            // Activity Finder
+            const activityGrid = document.getElementById('activity-grid');
+            const filterButtons = document.querySelectorAll('.activity-filter-btn');
+
+            function displayActivities(filter) {
+                activityGrid.innerHTML = '';
+                const filteredActivities = activitiesData.filter(activity => {
+                    if (filter === 'all') return true;
+                    return activity.category.includes(filter);
+                });
+
+                filteredActivities.forEach(activity => {
+                    const card = document.createElement('div');
+                    card.className = 'activity-card bg-white p-6 rounded-xl shadow-lg transition-opacity duration-300';
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-2">
+                             <h4 class="text-xl font-bold text-[#3A868C]">${activity.title}</h4>
+                             <span class="text-sm font-semibold py-1 px-3 rounded-full ${activity.cost === 'Free' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'}">${activity.cost}</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">${activity.desc}</p>
+                        <span class="text-xs font-medium text-gray-400 uppercase">${activity.location}</span>
+                    `;
+                    activityGrid.appendChild(card);
+                });
+            }
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    const filter = button.getAttribute('data-filter');
+                    displayActivities(filter);
+                });
+            });
+
+            // Set button styles
+            filterButtons.forEach(button => {
+                button.classList.add('py-2', 'px-4', 'rounded-full', 'text-sm', 'font-semibold', 'transition-colors', 'bg-white', 'text-[#3D405B]', 'hover:bg-[#3A868C]', 'hover:text-white');
+                if(button.classList.contains('active')) {
+                     button.classList.remove('bg-white', 'text-[#3D405B]');
+                     button.classList.add('bg-[#3A868C]', 'text-white');
+                }
+            });
+
+            displayActivities('all');
+
+            // Accordion
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                const content = item.querySelector('.accordion-content');
+                const icon = item.querySelector('.accordion-icon');
+                header.addEventListener('click', () => {
+                    const isOpen = content.style.maxHeight;
+                    // Close all accordions
+                    accordionItems.forEach(i => {
+                        i.querySelector('.accordion-content').style.maxHeight = null;
+                        i.querySelector('.accordion-icon').style.transform = 'rotate(0deg)';
+                    });
+                    // Open the clicked one if it was closed
+                    if (!isOpen) {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            // Active Nav Link on Scroll
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a');
+            window.onscroll = () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 70) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+
+            // Toggle styles for budget button
+            const toggle = document.querySelector('.toggle-checkbox');
+            toggle.addEventListener('change', function() {
+              if (this.checked) {
+                this.nextElementSibling.classList.remove('bg-gray-300');
+                this.nextElementSibling.classList.add('bg-[#3A868C]');
+              } else {
+                this.nextElementSibling.classList.add('bg-gray-300');
+                this.nextElementSibling.classList.remove('bg-[#3A868C]');
+              }
+            });
+
+        });
+    </script>
+</body>
+</html>
